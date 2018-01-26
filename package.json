@@ -1,0 +1,14 @@
+{
+  "name": "spag",
+  "version": "0.1.0",
+  "description": "An amazing game",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "webpack-dev-server"
+  },
+  "author": "",
+  "dependencies": {
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.11.1"
+  }
+}
