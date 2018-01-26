@@ -1,4 +1,4 @@
-class World {
+export default class World {
 	constructor() {
 
 	}
@@ -14,6 +14,3 @@ class World {
 		this.render();
 	}
 }
-
-// Expose the World class
-module.exports = World

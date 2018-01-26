@@ -1,28 +1,28 @@
-const world = require("./world.js");
+import World from './world';
 
 // This is called when the window is ready loading
 window.addEventListener("DOMContentLoaded", () => {
 	/**
 	 * Start a new application context
-	 * @param  {String} global The name of the global to store the new application in
+	 * @param  {String} context The name of the global to store the new application in
 	 */
-	function initApp(global) {
+	function initApp(context) {
 		// add stuff to the global scope (APP can now be accessed from anywhere)
-		window[global] = new PIXI.Application(window.innerWidth, window.innerHeight / 2, {
-			backgroundColor: global,
+		window[context] = new PIXI.Application(window.innerWidth, window.innerHeight / 2, {
+			backgroundColor: 0x000000,
 			forceCanvas: true
 		});
 
 		// Let the context resize
-		window[global].renderer.autoResize = true;
+		window[context].renderer.autoResize = true;
 
-		window[global].world = new world()
+		window[context].world = new World();
 
 		// Add it to the DOM
-		document.body.appendChild(window[global].view);
+		document.body.appendChild(window[context].view);
 
 		// Start game loop bound to the app
-		window.requestAnimationFrame(window[global].world.render.bind(window[global]));
+		window.requestAnimationFrame(window[context].world.render.bind(window[context]));
 	}
 
 	PIXI.loader
