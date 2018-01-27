@@ -1,0 +1,11 @@
+[
+    {
+        "name" : "noDamage"
+    },
+    {
+        "name" : "oneHit"
+    },
+    {
+        "name" : "gun"
+    }
+]
