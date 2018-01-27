@@ -25,7 +25,7 @@ export default class World {
 		let x = (Math.floor(Math.random() * 1500) + 100);
 		console.log("slime position: " + x);
 		let speed = (Math.floor(Math.random() * 5) + 1);
-		this.addEntity(new Enemy(this, x, 0, speed))
+		this.addEntity(new Enemy(this, x, -200, speed, 100))
 		// for (var i = 0; i < 25; i++) {
 		// 	let speed = (Math.floor(Math.random() * 5) + 1);
 		// 	let x = (Math.floor(Math.random() * 1500) + 100);
@@ -41,10 +41,15 @@ export default class World {
 	}
 
 	createColliders() {
+<<<<<<< HEAD
 		// this.colliders.push(new Collider(0, 200, 100, 100));
 		this.colliders.push(new Collider(0, 140, 100, 860, this));
 		this.colliders.push(new Collider(1050, 140, 100, 500, this));
 		this.colliders.push(new Collider(1550, 180, 100, 200, this));
+=======
+		this.colliders.push(new Collider(0, 200, 100, 100));
+		this.colliders.push(new Collider(100, 250, 50, 1000));
+>>>>>>> 97c687edad312835d4c21c5b0c8f8a9836bfd9ea
 
 		for (const colliderObject of this.colliders) {
 			this.context.stage.addChild(colliderObject.rectangle);
