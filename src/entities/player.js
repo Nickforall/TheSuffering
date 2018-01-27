@@ -100,7 +100,7 @@ export default class Player extends GameObject {
             } else if (this.playerOrientation === "left"){
                 this.sprite.show(35);
             }   
-             
+        }     
     }
 
     _attack() {
