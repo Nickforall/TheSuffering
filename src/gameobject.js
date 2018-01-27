@@ -14,6 +14,24 @@ export default class GameObject {
         this.velocity = new Vector2D(0, 0);
         this.acceleration = new Vector2D(0, 0);
         this.mass = mass;
+
+        this.hasUncollided = true;
+
+        this.collisionHandlers = [];
+    }
+
+    addCollisionHandler(fun) {
+        this.collisionHandlers.push(fun);
+    }
+
+    handleCollision(objectB) {
+        if(!this.hasUncollided) {
+            return;
+        }
+
+        for (let handler of this.collisionHandlers) {
+            handler(this, objectB);
+        }
     }
 
     applyForce(force) {
@@ -32,12 +50,29 @@ export default class GameObject {
 
         // prevent from falling from world, will probably need a bit more advanced collision detection soon.
 
-        if ((this.position.y + this.velocity.y + this.sprite.height) > this.world.context.view.height) {
+        let predictedX = (this.position.x + this.velocity.x + this.sprite.width);
+        let predictedY = (this.position.y + this.velocity.y + this.sprite.height);
+
+        let collision = this.world.willCollide(new Vector2D(predictedX, predictedY));
+        
+        if (collision !== null) {
             this.velocity.zero();
             this.acceleration.zero();
+
+            this.handleCollision(collision);            
+            this.hasUncollided = false;            
         } else {
             this.position.add(this.velocity);
             this.acceleration.zero();
-        }
+            
+            this.hasUncollided = true;
+        }        
+
+        /*if ((this.position.y + this.velocity.y + this.sprite.height) > this.world.context.view.height) {
+            
+        } else {
+            this.position.add(this.velocity);
+            this.acceleration.zero();
+        }*/
     }
 }
