@@ -210,7 +210,7 @@ export default class Player extends GameObject {
         let gamepads = navigator.getGamepads();
 
         // Only get the picked controler
-            let gp = gamepads[0];
+        let gp = gamepads[0];
 
         // Loop through all buttons to get their state
         for (var i = 0; i < gp.buttons.length; i++) {

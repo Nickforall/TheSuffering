@@ -36,7 +36,7 @@ var mappings = [
 	{
 		"name": "a SNES controler",
 		"type": "gamepad",
-		"id": "0079-0011-USB Gamepad ",
+		"id": /0079.*?0011/,
 		"axes": [
 			{
 				"LEFT": -1,
@@ -141,8 +141,10 @@ export default function startControlerConfig() {
 			// Ignore the keyboards
 			if (mapping.type != "gamepad") continue;
 
+			console.log(String(mapping.id));
+
 			// Match by known ID
-			if (mapping.id == event.gamepad.id) {
+			if (event.gamepad.id.match(mapping.id)) {
 				let map = mapping;
 				map.index = event.gamepad.index;
 
