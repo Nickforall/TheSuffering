@@ -16,7 +16,7 @@ window.addEventListener("DOMContentLoaded", () => {
 		// Let the context resize
 		window[context].renderer.autoResize = true;
 
-		window[context].world = new World();
+		window[context].world = new World(window[context]);
 
 		// Add it to the DOM
 		document.body.appendChild(window[context].view);
@@ -26,17 +26,12 @@ window.addEventListener("DOMContentLoaded", () => {
 	}
 
 	PIXI.loader
-		.add("person", "recources/in.png")
+		.add("person", "resources/in.png")
+		.add("test", "resources/physicstest.png")		
 		.load(() => {
 			// Start both the top and the bottom app
 			initApp("TAPP")
 			initApp("BAPP")
-
-			let person = new PIXI.Sprite(
-				PIXI.loader.resources["person"].texture
-			);
-
-			TAPP.stage.addChild(person);
 		});
 
 	console.debug("2 applications loaded");
