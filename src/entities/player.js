@@ -2,6 +2,11 @@ import GameObject from "../gameobject";
 import Gun from "../equipment/gun";
 import Vector2D from "../utils/vector2d";
 
+//some definitions
+let punching = false;
+let playerOrientation = "right";
+let jumped = false;
+
 export default class Player extends GameObject {
     constructor(world, x, y) {
         super(world, x, y, 1);
@@ -27,7 +32,7 @@ export default class Player extends GameObject {
         }
 
         this.gun = new Gun(this);
-
+        
         //Player sprite and startanimation
         let playerTextures = window.spriteUtils.frameSeries(0, 37, "player ", ".ase");
 
@@ -45,6 +50,7 @@ export default class Player extends GameObject {
 
         this.pressedButtons = {};
         this.app = world.context;
+        
 
         // Listen to the keydown event and call the handler if it's a bound one
         addListener("keydown", this._handleDown, this)
@@ -59,25 +65,88 @@ export default class Player extends GameObject {
      */
     _handleDown(code) {
         this.pressedButtons[code] = true;
+        this.punching = false;
 
         switch (code) {
             case "LEFT":
-                this.pressedButtons.LEFT = true;
+                this.pressedButtons.LEFT = true;  
+                this.sprite.playAnimation([16, 23]);
+                this.playerOrientation = "left"; 
                 break;
-            case "RIGHT":
+            case "RIGHT":  
                 this.pressedButtons.RIGHT = true;
+                this.sprite.playAnimation([8, 15]);
+                this.playerOrientation = "right";
                 break;
             case "JUMP":
+                this.pressedButtons.JUMP = true;
                 this._jump();
                 break;
             case "ATTACK":
-                this.gun.spawnBullet();
+                this.sprite.playAnimation([4, 7]);
+                // this.gun.spawnBullet();
+                this._attack();
+                
                 break;
         }
     }
 
     _jump() {
         this.sprite.vy = -20;
+        // this.jumped = true;
+        if(this.pressedButtons.JUMP){
+            if(this.playerOrientation === "right"){
+                this.sprite.show(32);
+            } else if (this.playerOrientation === "left"){
+                this.sprite.show(35);
+            }   
+             
+    }
+
+    _attack() {
+        if (this.punching === false) {
+            this.punching = true;
+            this.sprite.vx = 0;
+            if(this.playerOrientation === "right"){
+                this.sprite.playAnimation([4, 7]);
+                setTimeout(() => {
+                    // player.playAnimation([0, 3]);
+                    if (this.sprite.vx > 0) {
+                        this.sprite.playAnimation([8, 15]);
+                        this.playerOrientation = "right";
+                    } else if (this.sprite.vx < 0) {
+                        this.sprite.playAnimation([16, 23]);
+                        this.playerOrientation = "left";
+                    } else if (this.sprite.vx === 0 && this.playerOrientation == "right") {
+                        this.sprite.playAnimation([0, 3]);
+                        this.playerOrientation = "right";
+                    } else if (this.sprite.vx === 0 && this.playerOrientation == "left") {
+                        this.sprite.playAnimation([28, 31]);
+                        this.playerOrientation = "left";
+                    };
+                    this.punching = false;
+                }, 400);
+            } else if (this.playerOrientation === "left"){
+                this.sprite.playAnimation([24, 27]);
+                setTimeout(() => {
+                    // player.playAnimation([28, 31]);
+                    if (this.sprite.vx > 0) {
+                        this.sprite.playAnimation([8, 15]);
+                        this.playerOrientation = "right";
+                    } else if (this.sprite.vx < 0) {
+                        this.sprite.playAnimation([16, 23]);
+                        this.playerOrientation = "left";
+                    } else if (this.sprite.vx === 0 && this.playerOrientation == "right") {
+                        this.sprite.playAnimation([0, 3]);
+                        playerOrientation = "right";
+                    } else if (this.sprite.vx === 0 && this.playerOrientation == "left") {
+                        this.sprite.playAnimation([28, 31]);
+                        this.playerOrientation = "left";
+                    };
+                    this.punching = false;
+                }, 400);
+            }
+        }  
     }
 
     /**
@@ -88,12 +157,22 @@ export default class Player extends GameObject {
         switch (code) {
             case "LEFT":
                 this.pressedButtons.LEFT = false;
+                if (!this.pressedButtons.RIGHT  && punching === false) {
+                    this.sprite.playAnimation([28, 31]);
+                    this.playerOrientation = "left";
+                }
                 break;
             case "RIGHT":
                 this.pressedButtons.RIGHT = false;
+                if (!this.pressedButtons.LEFT && punching === false) {
+                    this.sprite.playAnimation([0, 3]);
+                    this.playerOrientation = "right";
+                }
                 break;
         }
     }
+
+    
 
     _pollGamepad() {
         /**
@@ -174,8 +253,25 @@ export default class Player extends GameObject {
             this.sprite.vx = 5;
         }
 
+        // if(this.jumped === true){
+        //     if(this.sprite.vy >= 0){
+        //         if(this.playerOrientation === "right"){
+        //             this.sprite.show(33);
+        //         } else if (this.playerOrientation === "left") {
+        //             this.sprite.show(36);
+        //         }
+        //     }
+        //     this.jumped = false
+
+        //     console.log(this.jumped);
+          
+        // }
+        
+
         this.sprite.y += this.sprite.vy;
         this.sprite.x += this.sprite.vx;
+
+        
 
         this.sprite.vx = 0;
 
