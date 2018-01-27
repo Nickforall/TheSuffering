@@ -29,19 +29,19 @@ export default class Player extends GameObject {
         this.gun = new Gun(this);
 
         //Player sprite and startanimation
-
         let playerTextures = window.spriteUtils.frameSeries(0, 37, "player ", ".ase");
 
-        let player = window.spriteUtils.sprite(playerTextures);
-        this.sprite = player;
-        player.show(12);
-        player.fps = 8;
+        this.sprite = window.spriteUtils.sprite(playerTextures);
+        this.sprite.show(12);
+        this.sprite.fps = 8;
 
-        player.scale.set(3, 3);
-        player.pivot.set(-46,0);
-        player.playAnimation([0, 3]);
-        this.world.context.stage.addChild(player);
+        this.sprite.scale.set(3, 3);
+        this.sprite.playAnimation([0, 3]);
 
+        this.sprite.vy = 10;
+        this.sprite.vx = 0;
+
+        this.world.context.stage.addChild(this.sprite);
 
         this.pressedButtons = {};
         this.app = world.context;
@@ -50,11 +50,7 @@ export default class Player extends GameObject {
         addListener("keydown", this._handleDown, this)
         addListener("keyup", this._handleUp, this)
 
-        this.addCollisionHandler(this.testCollision.bind(this));
-    }
-
-    testCollision() {
-        console.log("We handled a collision");
+        // this.addCollisionHandler(this.testCollision.bind(this));
     }
 
     /**
@@ -72,12 +68,16 @@ export default class Player extends GameObject {
                 this.pressedButtons.RIGHT = true;
                 break;
             case "JUMP":
-                this.applyForce(new Vector2D(0, -7));
+                this._jump();
                 break;
             case "ATTACK":
                 this.gun.spawnBullet();
                 break;
         }
+    }
+
+    _jump() {
+        this.sprite.vy = -20;
     }
 
     /**
@@ -160,17 +160,24 @@ export default class Player extends GameObject {
     }
 
     update() {
-        super.update();
+        // super.update();
+        let collision  = this.world.willCollide(this.sprite);
 
-        this.sprite.x = this.position.x;
-        this.sprite.y = this.position.y;
+        if (this.sprite.vy < 10) {
+            this.sprite.vy += 1;
+        }  
 
         if (this.pressedButtons["LEFT"]) {
-            this.position.x -= 5;
+            this.sprite.vx = -5;
         }
         if (this.pressedButtons["RIGHT"]) {
-            this.position.x += 5;
+            this.sprite.vx = 5;
         }
+
+        this.sprite.y += this.sprite.vy;
+        this.sprite.x += this.sprite.vx;
+
+        this.sprite.vx = 0;
 
         this._pollGamepad();
     }

@@ -7,7 +7,7 @@ export default class Collider {
 
         let platform = new PIXI.Graphics();
         platform.beginFill(0xCCFF99);
-        platform.drawRect(0, 0, this.height, this.width);
+        platform.drawRect(0, 0, this.width, this.height);
         platform.endFill();
         platform.x = this.x;
         platform.y = this.y;
