@@ -19,6 +19,12 @@ export default class Player extends GameObject {
         this.pressedButtons = []
 
         window.addEventListener("keydown", this.handleKeyEvent.bind(this));
+
+        this.addCollisionHandler(this.testCollision.bind(this));
+    }
+
+    testCollision() {
+        console.log("We handled a collision")
     }
 
     handleKeyEvent(ev) {
