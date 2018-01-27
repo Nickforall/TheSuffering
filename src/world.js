@@ -65,14 +65,26 @@ export default class World {
 			collidables.push(coll.rectangle)
 		}
 
-		// todo, do something later
-		/*for (const entity of this.entities) {
-			if (entity.sprite && !(entity instanceof Player)) {
-				collidables.push(entity.sprite)
-			}
-		}*/
+		return this.bump.hit(sprite, collidables, true, false, false);
+	}
 
-		return this.bump.hit(sprite, collidables, true, false, false)
+	getCollidedEntites(collidingSprite) {
+		for (const entity of this.entities) {
+			if (!(entity instanceof Player)) {
+				var sprite;
+				if(entity instanceof Enemy) {
+					sprite = entity.container;
+				}
+
+				let collision = this.bump.hit(collidingSprite, sprite);
+
+				if (collision) {
+					return entity;
+				} else {
+					return null;
+				}
+			}
+		}
 	}
 
 	getContext() {

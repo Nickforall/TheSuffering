@@ -1,6 +1,7 @@
 import GameObject from "../gameobject";
 import Gun from "../equipment/gun";
 import Vector2D from "../utils/vector2d";
+import Enemy from "./enemy";
 
 //some definitions
 let punching = false;
@@ -51,6 +52,8 @@ export default class Player extends GameObject {
         this.pressedButtons = {};
         this.app = world.context;
 
+        this.isBeingDamaged = false;
+        this.lives = 3;
 
         // Listen to the keydown event and call the handler if it's a bound one
         addListener("keydown", this._handleDown, this)
@@ -254,6 +257,17 @@ export default class Player extends GameObject {
         checkAxis(-1, gp.axes[1], "JUMP", this);
     }
 
+    _damage() {
+        this.lives -= 1;
+
+        if (this.lives <= 0) {
+            // game over
+
+            this.sprite.scale.x = 0;
+            this.sprite.scale.y = 0;
+        }
+    }
+
     update() {
         // super.update();
         let collision  = this.world.willCollide(this.sprite);
@@ -265,6 +279,19 @@ export default class Player extends GameObject {
         else if (collision == "right" && this.pressedButtons.RIGHT) {
             this.sprite.playAnimation([0, 3]);
             this.playerOrientation = "right";
+        }
+
+        let entityCollision = this.world.getCollidedEntites(this.sprite)
+        if (entityCollision !== null) {
+            if(entityCollision instanceof Enemy && !this.isBeingDamaged) {
+                this.isBeingDamaged = true;
+
+                setTimeout(() => {
+                    this.isBeingDamaged = false;
+                }, 2000);
+
+                this._damage();
+            }
         }
 
         if (this.sprite.vy < 10) {
