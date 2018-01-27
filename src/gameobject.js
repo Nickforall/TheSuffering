@@ -4,7 +4,7 @@ export default class GameObject {
     /**
      * A gameobject is anything where physics apply to.
      * @param {World} world The world the gameobject is in
-     * @param {Number} x 
+     * @param {Number} x
      * @param {Number} y
      * @param {Number} mass
      */
@@ -30,7 +30,7 @@ export default class GameObject {
         // DO COLLISION  DETECTION HERE
         this.velocity.add(this.acceleration);
 
-        // prevent from falling from world, will probably need a bit more advanced collision detection soon.        
+        // prevent from falling from world, will probably need a bit more advanced collision detection soon.
 
         if ((this.position.y + this.velocity.y + this.sprite.height) > this.world.context.view.height) {
             this.velocity.zero();

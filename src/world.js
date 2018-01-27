@@ -8,12 +8,17 @@ export default class World {
 		this.gravity = 1;
 
 		this.addEntity(new Player(this, 0, 0))
+
+		// Listen for new gamepads
+		window.addEventListener("gamepadconnected", function(event) {
+            console.info(`New gamepad connected: ${event.gamepad.id}`);
+        });
 	}
 
 	getContext() {
 		return this.context;
 	}
-	
+
 	addEntity(entity) {
 		if (!(entity instanceof GameObject)) {
 			throw new Error('Entity to add is not a gameobject, so doesn\'t have physics to update');
@@ -31,7 +36,7 @@ export default class World {
 
 		// update every entity.
 		for (const entity of this.world.entities) {
-			try { 
+			try {
 				entity.update();
 			} catch (ex) {
 				console.error('Error updating entity', ex);
