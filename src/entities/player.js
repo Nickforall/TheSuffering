@@ -1,6 +1,7 @@
 import GameObject from "../gameobject";
 import Gun from "../equipment/gun";
 import Vector2D from "../utils/vector2d";
+import xpbar from "../../ui/xpbar";
 
 //some definitions
 let punching = false;
@@ -51,6 +52,11 @@ export default class Player extends GameObject {
         this.pressedButtons = {};
         this.app = world.context;
 
+        //adding value to player
+        this.experience;
+        
+        //making instances of xpdrawer
+        let xpBar = new xpbar(this);
 
         // Listen to the keydown event and call the handler if it's a bound one
         addListener("keydown", this._handleDown, this)

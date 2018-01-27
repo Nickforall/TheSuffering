@@ -3,6 +3,13 @@ export default class deBuff{
     constructor(){
 
     }
+    checkValue(player){
+        if(player.value == 100){
+            randomDeBuff();
+        }else{
+            console.log('lol niet genoeg velue')
+        }
+    }
     //this function is to choose a random debuff
     randomDeBuff() {
         
