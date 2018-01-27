@@ -17,6 +17,8 @@ export default class Enemy extends GameObject {
 
         let slime = window.spriteUtils.sprite(slimeTextures);
         this.sprite = slime;
+        this.sprite.y = y;
+        this.sprite.x = x;        
         slime.show(0);
         slime.fps = 8;
 
@@ -28,16 +30,18 @@ export default class Enemy extends GameObject {
         this.world.context.stage.addChild(container);
 
         this.health = 1;
+        this.sprite.vy = 10;
     }
 
     update() {
         super.update();
 
-        // this.sprite.x = this.position.x;
-        this.sprite.x = this.position.x;
-        this.sprite.y = this.position.y;
 
-        // this.position.x -= this.speed;
+        // this.sprite.x = this.position.x;
+        this.sprite.x -= this.speed;
+        this.sprite.y += this.sprite.vy;
+
+        this.world.willCollide(this.sprite)
 
     }
 
