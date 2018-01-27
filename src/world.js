@@ -56,7 +56,7 @@ export default class World {
 			}
 		}*/
 
-		this.bump.hit(sprite, collidables, true, false, false);
+		return this.bump.hit(sprite, collidables, true, false, false)
 	}
 
 	getContext() {

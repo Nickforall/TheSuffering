@@ -9,8 +9,9 @@ var mappings = [
 			"LEFT": 65,
 			"RIGHT": 68,
 			"JUMP": 32,
-			"JUMP": 87,
-			"ATTACK": 69
+			"ATTACK": 83,
+			"BUFF": 81,
+			"DEBUFF": 69
 		}
 	},
 	{
@@ -20,7 +21,9 @@ var mappings = [
 			"LEFT": 37,
 			"RIGHT": 39,
 			"JUMP": 38,
-			"ATTACK": 16
+			"ATTACK": 40,
+			"BUFF": 191,
+			"DEBUFF": 16
 		}
 	},
 	{
@@ -30,13 +33,15 @@ var mappings = [
 			"LEFT": 100,
 			"RIGHT": 102,
 			"JUMP": 104,
-			"ATTACK": 101
+			"ATTACK": 101,
+			"BUFF": 103,
+			"DEBUFF": 105
 		}
 	},
 	{
 		"name": "a SNES controler",
 		"type": "gamepad",
-		"id": "0079-0011-USB Gamepad ",
+		"id": /0079.*?0011/,
 		"axes": [
 			{
 				"LEFT": -1,
@@ -48,7 +53,9 @@ var mappings = [
 		],
 		"buttons": {
 			"ATTACK": 1,
-			"JUMP": 2
+			"JUMP": 2,
+			"BUFF": 4,
+			"DEBUFF": 5,
 		}
 	}
 ];
@@ -77,7 +84,7 @@ export default function startControlerConfig() {
 
 			// Set the display of the bottom app
 			document.getElementById("overlay").children[targetIndex].className = "waiting";
-			document.getElementById("overlay").children[targetIndex].children[1].innerHTML = "Press any key";
+			document.getElementById("overlay").children[targetIndex].children[1].innerHTML = "Press other keys we programmed in";
 		}
 		// When the second user picks a input
 		else if (targetIndex == 1) {
@@ -90,6 +97,7 @@ export default function startControlerConfig() {
 				return;
 			}
 
+			document.getElementById("overlay").children[targetIndex].children[0].innerHTML = "Player 2";
 			document.getElementById("overlay").children[targetIndex].className = "idle";
 
 			document.getElementById("overlay").children[0].children[1].innerHTML = "Ready!";
@@ -99,14 +107,13 @@ export default function startControlerConfig() {
 			window.removeEventListener("keydown", keyboardListener);
 			window.removeEventListener("gamepadconnected", gamepadListener);
 
-			setTimeout(function () {
-				document.getElementById("overlay").children[0].className = "ready";
-				document.getElementById("overlay").children[1].className = "ready";
+			setTimeout(() => {
+				document.getElementById("overlay").style.opacity = 0;
 
-				setTimeout(function () {
+				setTimeout(() => {
 					// Close the overlay
 					document.getElementById("overlay").style.display = "none";
-				}, 200);
+				}, 1000);
 			}, 800);
 		}
 	}
@@ -142,7 +149,7 @@ export default function startControlerConfig() {
 			if (mapping.type != "gamepad") continue;
 
 			// Match by known ID
-			if (mapping.id == event.gamepad.id) {
+			if (event.gamepad.id.match(mapping.id)) {
 				let map = mapping;
 				map.index = event.gamepad.index;
 

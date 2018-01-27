@@ -32,7 +32,7 @@ export default class Player extends GameObject {
         }
 
         this.gun = new Gun(this);
-        
+
         //Player sprite and startanimation
         let playerTextures = window.spriteUtils.frameSeries(0, 37, "player ", ".ase");
 
@@ -50,7 +50,7 @@ export default class Player extends GameObject {
 
         this.pressedButtons = {};
         this.app = world.context;
-        
+
 
         // Listen to the keydown event and call the handler if it's a bound one
         addListener("keydown", this._handleDown, this)
@@ -64,29 +64,43 @@ export default class Player extends GameObject {
      * @param  {String} code Uppercase action command
      */
     _handleDown(code) {
-        this.pressedButtons[code] = true;
         this.punching = false;
 
         switch (code) {
             case "LEFT":
-                this.pressedButtons.LEFT = true;  
-                this.sprite.playAnimation([16, 23]);
-                this.playerOrientation = "left"; 
+                if (this.pressedButtons.LEFT !== true) {
+                    this.sprite.playAnimation([16, 23]);
+                }
+
+                this.pressedButtons.LEFT = true;
+                this.playerOrientation = "left";
                 break;
-            case "RIGHT":  
+            case "RIGHT":
+                if (this.pressedButtons.RIGHT !== true) {
+                    this.sprite.playAnimation([8, 15]);
+                }
+
                 this.pressedButtons.RIGHT = true;
-                this.sprite.playAnimation([8, 15]);
                 this.playerOrientation = "right";
                 break;
             case "JUMP":
-                this.pressedButtons.JUMP = true;
-                this._jump();
+                if (this.pressedButtons.JUMP !== true) {
+                    this.pressedButtons.JUMP = true;
+                    this._jump();
+                }
                 break;
             case "ATTACK":
+                this.pressedButtons.ATTACK = true;
                 this.sprite.playAnimation([4, 7]);
                 // this.gun.spawnBullet();
                 this._attack();
-                
+
+                break;
+            case "BUFF":
+                console.log("BUFF");
+                break;
+            case "DEBUFF":
+                console.log("DEBUFF");
                 break;
         }
     }
@@ -99,8 +113,8 @@ export default class Player extends GameObject {
                 this.sprite.show(32);
             } else if (this.playerOrientation === "left"){
                 this.sprite.show(35);
-            }   
-        }     
+            }
+        }
     }
 
     _attack() {
@@ -146,7 +160,7 @@ export default class Player extends GameObject {
                     this.punching = false;
                 }, 400);
             }
-        }  
+        }
     }
 
     /**
@@ -168,6 +182,9 @@ export default class Player extends GameObject {
                     this.sprite.playAnimation([0, 3]);
                     this.playerOrientation = "right";
                 }
+                break;
+            case "JUMP":
+                this.pressedButtons.JUMP = false;
                 break;
         }
     }
@@ -199,11 +216,12 @@ export default class Player extends GameObject {
         let gamepads = navigator.getGamepads();
 
         // Only get the picked controler
-            let gp = gamepads[0];
+        let gp = gamepads[0];
 
         // Loop through all buttons to get their state
         for (var i = 0; i < gp.buttons.length; i++) {
             let command = false;
+
 
             for (let _command in this.app.inputProfile.buttons) {
 				if (!this.app.inputProfile.buttons.hasOwnProperty(_command)) continue;
@@ -240,9 +258,18 @@ export default class Player extends GameObject {
         // super.update();
         let collision  = this.world.willCollide(this.sprite);
 
+        if (collision == "left" && this.pressedButtons.LEFT) {
+            this.sprite.playAnimation([28, 31]);
+            this.playerOrientation = "left";
+        }
+        else if (collision == "right" && this.pressedButtons.RIGHT) {
+            this.sprite.playAnimation([0, 3]);
+            this.playerOrientation = "right";
+        }
+
         if (this.sprite.vy < 10) {
             this.sprite.vy += 1;
-        }  
+        }
 
         if (this.pressedButtons["LEFT"]) {
             this.sprite.vx = -5;
@@ -264,9 +291,9 @@ export default class Player extends GameObject {
         //     this.jumped = false
 
         //     console.log(this.jumped);
-          
+
         // }
-        
+
 
         this.sprite.y += this.sprite.vy;
         this.sprite.x += this.sprite.vx;

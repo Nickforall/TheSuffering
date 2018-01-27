@@ -35,6 +35,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 	PIXI.loader
 		.add("test", "resources/physicstest.png")
+		.add("../resources/level.png")
 		.add("../resources/player.json")
 		.add("../resources/slime.json")
 		.on("progress", (loader) => {
@@ -51,7 +52,12 @@ window.addEventListener("DOMContentLoaded", () => {
 			startControlerConfig()
 
 			setTimeout(() => {
-				document.getElementById("loader").style.display = "none"
+				document.getElementById("loader").style.opacity = 0
+				setTimeout(() => {
+					document.getElementById("loader").style.display = "none"
+				}, 200);
 			}, 400);
 		});
+
+	document.getElementById("loader").style.backgroundImage = 'url("resources/loadWater.png")'
 });

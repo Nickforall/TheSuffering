@@ -5,7 +5,9 @@ body {
 	overflow: hidden;
 }
 
-#ui, #overlay, #loader {
+#loader,
+#overlay,
+#ui {
 	height: 100vh;
 	width: 100vw;
 	position: fixed;
@@ -17,11 +19,13 @@ body {
 	position: fixed;
 	display: flex;
 	flex-direction: column;
+	opacity: 1;
+	transition: opacity .1s;
 
 	> div {
 		font-family: 'VT323', monospace;
 		flex: 1;
-		transition: background .2s, opacity .2s;
+		transition: background 0.2s, opacity 0.2s;
 		color: #fff;
 		font-size: 20px;
 
@@ -34,7 +38,7 @@ body {
 			text-align: center;
 			display: block;
 			font-size: 5vh;
-			transition: font-size .1s linear;
+			transition: font-size 0.1s linear;
 		}
 
 		&.waiting span {
@@ -46,9 +50,17 @@ body {
 			}
 
 			@keyframes arrow_left {
-				0%   {margin-right: 10px;}
-				50%  {margin-right: 40px;}
-				100% {margin-right: 10px;}
+				0% {
+					margin-right: 10px;
+				}
+
+				50% {
+					margin-right: 40px;
+				}
+
+				100% {
+					margin-right: 10px;
+				}
 			}
 
 			&::after {
@@ -57,11 +69,18 @@ body {
 			}
 
 			@keyframes arrow_right {
-				0%   {margin-left: 10px;}
-				50%  {margin-left: 40px;}
-				100% {margin-left: 10px;}
-			}
+				0% {
+					margin-left: 10px;
+				}
 
+				50% {
+					margin-left: 40px;
+				}
+
+				100% {
+					margin-left: 10px;
+				}
+			}
 		}
 
 		&.idle {
@@ -79,19 +98,87 @@ body {
 }
 
 #loader {
-    font-family: 'VT323', monospace;
+	font-family: 'VT323', monospace;
 	text-align: center;
-	background: #090A2F;
+	background-color: #639bff;
+	background-image: url("");
+	background-repeat: repeat-x;
+	background-position: 0% bottom;
+	opacity: 1;
+	transition: opacity .5s ease-in;
+	animation: waves 2.4s infinite linear;
 
 	h1 {
 		height: 20vh;
 		margin-top: 20vh;
 		font-size: 15vh;
-		color: #fff;
+		color: #3b70ce;
+		text-shadow: 0 0 6px rgba(61,122,231,.45);
 	}
 
 	progress {
 		height: 20px;
 		width: 200px;
+	}
+
+	progress[value] {
+		width: 250px;
+		height: 25px;
+		background-color: transparent;
+	}
+
+	img {
+		position: absolute;
+		bottom: 0;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+}
+
+@keyframes waves {
+0% {
+	background-position: 0px 100%;
+}
+
+50% {
+	background-position: 32px 102%;
+}
+
+100% {
+	background-position: 64px 100%;
+}
+}
+
+#topUi {
+	top: 5%;
+	position: fixed;
+}
+
+#bottomUi {
+	top: 55vh;
+	position: fixed;
+}
+
+.ui {
+	width: 100%;
+
+	.xpbar {
+		position: absolute;
+		left: 45%;
+
+		span {
+			font-family: 'VT323', monospace;
+			color: white;
+			font-size: 25px;
+			position: absolute;
+			left: 10px;
+			width: 100%;
+		}
+
+		progress[value] {
+			width: 250px;
+			height: 25px;
+			background-color: green;
+		}
 	}
 }
