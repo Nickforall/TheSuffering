@@ -13,6 +13,12 @@ export default class World {
 
 		this.bump = new Bump();
 
+		this.worldsprite = window.spriteUtils.sprite("../resources/level.png", 0, (this.context.view.height));
+		this.worldsprite.anchor.set(0, 1);
+		this.worldsprite.scale.set(3, 3);
+
+        this.context.stage.addChild(this.worldsprite);
+
 		this.addEntity(new Player(this, 0, 0))
 		// Add Enemy enitities
 		// this.addEntity(new Enemy(this, 300, 500))
@@ -35,8 +41,10 @@ export default class World {
 	}
 
 	createColliders() {
-		this.colliders.push(new Collider(0, 200, 100, 100));
-		this.colliders.push(new Collider(100, 250, 50, 400));
+		// this.colliders.push(new Collider(0, 200, 100, 100));
+		this.colliders.push(new Collider(0, 140, 100, 860, this));
+		this.colliders.push(new Collider(1050, 140, 100, 500, this));
+		this.colliders.push(new Collider(1550, 180, 100, 200, this));
 
 		for (const colliderObject of this.colliders) {
 			this.context.stage.addChild(colliderObject.rectangle);
