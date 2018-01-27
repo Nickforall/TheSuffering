@@ -172,8 +172,6 @@ export default class Player extends GameObject {
         }
     }
 
-    
-
     _pollGamepad() {
         /**
          * Do a check on change of asis buttons
@@ -253,6 +251,8 @@ export default class Player extends GameObject {
             this.sprite.vx = 5;
         }
 
+
+
         // if(this.jumped === true){
         //     if(this.sprite.vy >= 0){
         //         if(this.playerOrientation === "right"){
@@ -271,7 +271,11 @@ export default class Player extends GameObject {
         this.sprite.y += this.sprite.vy;
         this.sprite.x += this.sprite.vx;
 
-        
+        this.world.context.stage.position.x = this.world.context.view.width / 2;
+        this.world.context.stage.position.y = this.world.context.view.height / 2;
+
+        this.world.context.stage.pivot.x = this.sprite.x;
+        this.world.context.stage.position.y = this.world.context.view.height / 6;
 
         this.sprite.vx = 0;
 
