@@ -25,8 +25,8 @@ export default class World {
 	}
 
 	createColliders() {
-		this.colliders.push(new Collider(0, 50, 100, 100));
-		this.colliders.push(new Collider(100, 150, 100, 100));
+		this.colliders.push(new Collider(0, 200, 100, 100));
+		this.colliders.push(new Collider(100, 250, 100, 100));
 
 
 		for (const colliderObject of this.colliders) {

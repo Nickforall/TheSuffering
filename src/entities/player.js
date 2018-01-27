@@ -33,10 +33,12 @@ export default class Player extends GameObject {
         let playerTextures = window.spriteUtils.frameSeries(0, 37, "player ", ".ase");
 
         let player = window.spriteUtils.sprite(playerTextures);
+        this.sprite = player;
         player.show(12);
         player.fps = 8;
 
         player.scale.set(3, 3);
+        player.pivot.set(-46,0);
         player.playAnimation([0, 3]);
         this.world.context.stage.addChild(player);
 
