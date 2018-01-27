@@ -27,7 +27,7 @@ export default class GameObject {
     update() {
         this.applyForce(new Vector2D(0, this.world.gravity * this.mass))
 
-        // DO COLLISION DETECTION HERE
+        // DO COLLISION  DETECTION HERE
         this.velocity.add(this.acceleration);
 
         // prevent from falling from world, will probably need a bit more advanced collision detection soon.        
