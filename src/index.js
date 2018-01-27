@@ -1,4 +1,5 @@
 import World from './world';
+import startControlerConfig from './controlerConfig'
 
 // This is called when the window is ready loading
 window.addEventListener("DOMContentLoaded", () => {
@@ -9,7 +10,7 @@ window.addEventListener("DOMContentLoaded", () => {
 	function initApp(context) {
 		// add stuff to the global scope (APP can now be accessed from anywhere)
 		window[context] = new PIXI.Application(window.innerWidth, window.innerHeight / 2, {
-			backgroundColor: 0x000000,
+			backgroundColor: 0xFF0000,
 			forceCanvas: true
 		});
 
@@ -17,6 +18,7 @@ window.addEventListener("DOMContentLoaded", () => {
 		window[context].renderer.autoResize = true;
 
 		window[context].world = new World(window[context]);
+		window[context].inputProfile = false;
 
 		// Add it to the DOM
 		document.body.appendChild(window[context].view);
@@ -27,12 +29,15 @@ window.addEventListener("DOMContentLoaded", () => {
 
 	PIXI.loader
 		.add("person", "resources/in.png")
-		.add("test", "resources/physicstest.png")		
+		.add("test", "resources/physicstest.png")
 		.load(() => {
 			// Start both the top and the bottom app
 			initApp("TAPP")
 			initApp("BAPP")
-		});
 
-	console.debug("2 applications loaded");
+			console.debug("2 applications loaded");
+
+			// Ask the players what inputs to use
+			startControlerConfig()
+		});
 });
