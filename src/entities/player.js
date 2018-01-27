@@ -1,11 +1,8 @@
 import GameObject from "../gameobject";
 import Gun from "../equipment/gun";
 import Vector2D from "../utils/vector2d";
-<<<<<<< HEAD
 import Enemy from "./enemy";
-=======
-import xpbar from "../../ui/xpbar";
->>>>>>> 579c3078a5a7f9b99ec94cd3b124eadb4c76c2bd
+import xpbar from "../ui/xpbar"
 
 //some definitions
 let punching = false;
@@ -56,16 +53,13 @@ export default class Player extends GameObject {
         this.pressedButtons = {};
         this.app = world.context;
 
-<<<<<<< HEAD
         this.isBeingDamaged = false;
         this.lives = 3;
-=======
         //adding value to player
         this.experience;
 
         //making instances of xpdrawer
         this.xpBar = new xpbar(this);
->>>>>>> 579c3078a5a7f9b99ec94cd3b124eadb4c76c2bd
 
         // Listen to the keydown event and call the handler if it's a bound one
         addListener("keydown", this._handleDown, this)
@@ -293,7 +287,6 @@ export default class Player extends GameObject {
             this.playerOrientation = "right";
         }
 
-<<<<<<< HEAD
         let entityCollision = this.world.getCollidedEntites(this.sprite)
         if (entityCollision !== null) {
             if(entityCollision instanceof Enemy && !this.isBeingDamaged) {
@@ -306,8 +299,6 @@ export default class Player extends GameObject {
                 this._damage();
             }
         }
-=======
->>>>>>> 579c3078a5a7f9b99ec94cd3b124eadb4c76c2bd
 
         if (this.sprite.vy < 10) {
             this.sprite.vy += 1;
