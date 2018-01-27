@@ -55,8 +55,6 @@ export default class Enemy extends GameObject {
 
         // set container velocity
         this.container.vy = 10;
-
-
     }
 
     update() {

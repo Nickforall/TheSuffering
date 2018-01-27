@@ -40,6 +40,14 @@ export default class World {
 		});
 	}
 
+	isTop() {
+		return this.context.pos === "TAPP";
+	}
+
+	isBottom() {
+		return this.context.pos === "BAPP";
+	}
+
 	createColliders() {
 		// this.colliders.push(new Collider(0, 200, 100, 100));
 		this.colliders.push(new Collider(0, 140, 100, 860, this));
