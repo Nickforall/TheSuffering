@@ -28,14 +28,18 @@ export default class Player extends GameObject {
 
         this.gun = new Gun(this);
 
-        this.sprite = new PIXI.Sprite(
-			PIXI.loader.resources["test"].texture
-		);
+        //Player sprite and startanimation
 
-		this.sprite.scale.x = 0.1;
-        this.sprite.scale.y = 0.1;
+        let playerTextures = window.spriteUtils.frameSeries(0, 37, "player ", ".ase");
 
-        this.world.context.stage.addChild(this.sprite);
+        let player = window.spriteUtils.sprite(playerTextures);
+        player.show(12);
+        player.fps = 8;
+
+        player.scale.set(3, 3);
+        player.playAnimation([0, 3]);
+        this.world.context.stage.addChild(player);
+
 
         this.pressedButtons = {};
         this.app = world.context;

@@ -1,8 +1,12 @@
 import World from './world';
 import startControlerConfig from './controlerConfig'
+import Bump from "./utils/bump";
 
 // This is called when the window is ready loading
 window.addEventListener("DOMContentLoaded", () => {
+	window.spriteUtils = new SpriteUtilities(PIXI);
+	window.bump = new Bump(PIXI);
+    PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST
 	/**
 	 * Start a new application context
 	 * @param  {String} context The name of the global to store the new application in
@@ -30,6 +34,8 @@ window.addEventListener("DOMContentLoaded", () => {
 	PIXI.loader
 		.add("person", "resources/in.png")
 		.add("test", "resources/physicstest.png")
+		.add("../resources/player.json")
+		.add("../resources/slime.json")
 		.load(() => {
 			// Start both the top and the bottom app
 			initApp("TAPP")
