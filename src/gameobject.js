@@ -27,11 +27,17 @@ export default class GameObject {
     update() {
         this.applyForce(new Vector2D(0, this.world.gravity * this.mass))
 
-        this.velocity.add(this.acceleration);
-        this.position.add(this.velocity);
-
         // DO COLLISION DETECTION HERE
+        this.velocity.add(this.acceleration);
 
-        this.acceleration.zero();
+        // prevent from falling from world, will probably need a bit more advanced collision detection soon.        
+
+        if ((this.position.y + this.velocity.y + this.sprite.height) > this.world.context.view.height) {
+            this.velocity.zero();
+            this.acceleration.zero();
+        } else {
+            this.position.add(this.velocity);
+            this.acceleration.zero();
+        }
     }
 }
