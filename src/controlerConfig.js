@@ -8,7 +8,7 @@ var mappings = [
 		"keys": {
 			"LEFT": 65,
 			"RIGHT": 68,
-			"JUMP": 32,
+			"JUMP": 87,
 			"ATTACK": 83,
 			"BUFF": 81,
 			"DEBUFF": 69
