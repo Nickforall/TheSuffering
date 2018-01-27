@@ -9,8 +9,9 @@ var mappings = [
 			"LEFT": 65,
 			"RIGHT": 68,
 			"JUMP": 32,
-			"JUMP": 87,
-			"ATTACK": 69
+			"ATTACK": 83,
+			"BUFF": 81,
+			"DEBUFF": 69
 		}
 	},
 	{
@@ -20,7 +21,9 @@ var mappings = [
 			"LEFT": 37,
 			"RIGHT": 39,
 			"JUMP": 38,
-			"ATTACK": 16
+			"ATTACK": 40,
+			"BUFF": 191,
+			"DEBUFF": 16
 		}
 	},
 	{
@@ -30,7 +33,9 @@ var mappings = [
 			"LEFT": 100,
 			"RIGHT": 102,
 			"JUMP": 104,
-			"ATTACK": 101
+			"ATTACK": 101,
+			"BUFF": 103,
+			"DEBUFF": 105
 		}
 	},
 	{
@@ -48,7 +53,9 @@ var mappings = [
 		],
 		"buttons": {
 			"ATTACK": 1,
-			"JUMP": 2
+			"JUMP": 2,
+			"BUFF": 4,
+			"DEBUFF": 5,
 		}
 	}
 ];
@@ -90,6 +97,7 @@ export default function startControlerConfig() {
 				return;
 			}
 
+			document.getElementById("overlay").children[targetIndex].children[0].innerHTML = "Player 2";
 			document.getElementById("overlay").children[targetIndex].className = "idle";
 
 			document.getElementById("overlay").children[0].children[1].innerHTML = "Ready!";
@@ -139,8 +147,6 @@ export default function startControlerConfig() {
 		for (let mapping of mappings) {
 			// Ignore the keyboards
 			if (mapping.type != "gamepad") continue;
-
-			console.log(String(mapping.id));
 
 			// Match by known ID
 			if (event.gamepad.id.match(mapping.id)) {

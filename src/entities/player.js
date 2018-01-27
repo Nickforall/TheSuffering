@@ -96,6 +96,12 @@ export default class Player extends GameObject {
                 this._attack();
 
                 break;
+            case "BUFF":
+                console.log("BUFF");
+                break;
+            case "DEBUFF":
+                console.log("DEBUFF");
+                break;
         }
     }
 
@@ -215,6 +221,7 @@ export default class Player extends GameObject {
         // Loop through all buttons to get their state
         for (var i = 0; i < gp.buttons.length; i++) {
             let command = false;
+
 
             for (let _command in this.app.inputProfile.buttons) {
 				if (!this.app.inputProfile.buttons.hasOwnProperty(_command)) continue;
