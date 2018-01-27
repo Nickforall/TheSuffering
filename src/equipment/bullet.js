@@ -18,7 +18,7 @@ export default class Bullet extends GameObject {
     update() {
         super.update();
 
-        this.position.x += 1;
+        this.position.x += 10;
 
         this.sprite.x = this.position.x;
         this.sprite.y = this.player.position.y;
