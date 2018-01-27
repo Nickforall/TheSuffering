@@ -251,6 +251,15 @@ export default class Player extends GameObject {
         // super.update();
         let collision  = this.world.willCollide(this.sprite);
 
+        if (collision == "left" && this.pressedButtons.LEFT) {
+            this.sprite.playAnimation([28, 31]);
+            this.playerOrientation = "left";
+        }
+        else if (collision == "right" && this.pressedButtons.RIGHT) {
+            this.sprite.playAnimation([0, 3]);
+            this.playerOrientation = "right";
+        }
+
         if (this.sprite.vy < 10) {
             this.sprite.vy += 1;
         }
