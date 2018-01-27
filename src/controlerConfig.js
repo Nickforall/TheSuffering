@@ -3,7 +3,7 @@
 // All key combinations
 var mappings = [
 	{
-		"name": "the WSAD keys",
+		"name": "the WASD keys",
 		"type": "keyboard",
 		"keys": {
 			"LEFT": 65,
