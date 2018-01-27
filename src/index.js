@@ -2,6 +2,8 @@ import World from './world';
 import startControlerConfig from './controlerConfig'
 import Bump from "./utils/bump";
 
+import './styles/index.scss';
+
 // This is called when the window is ready loading
 window.addEventListener("DOMContentLoaded", () => {
 	window.spriteUtils = new SpriteUtilities(PIXI);
@@ -32,10 +34,12 @@ window.addEventListener("DOMContentLoaded", () => {
 	}
 
 	PIXI.loader
-		.add("person", "resources/in.png")
 		.add("test", "resources/physicstest.png")
 		.add("../resources/player.json")
 		.add("../resources/slime.json")
+		.on("progress", (loader) => {
+			document.getElementById("loaderProg").value = loader.progress
+		})
 		.load(() => {
 			// Start both the top and the bottom app
 			initApp("TAPP")
@@ -45,5 +49,9 @@ window.addEventListener("DOMContentLoaded", () => {
 
 			// Ask the players what inputs to use
 			startControlerConfig()
+
+			setTimeout(() => {
+				document.getElementById("loader").style.display = "none"
+			}, 400);
 		});
 });

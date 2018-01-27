@@ -1,7 +1,9 @@
+// import startControlerConfig from './ui'
+
 // All key combinations
 var mappings = [
 	{
-		"name": "wasd",
+		"name": "the WSAD keys",
 		"type": "keyboard",
 		"keys": {
 			"LEFT": 65,
@@ -12,7 +14,7 @@ var mappings = [
 		}
 	},
 	{
-		"name": "arrows",
+		"name": "the arrow keys",
 		"type": "keyboard",
 		"keys": {
 			"LEFT": 37,
@@ -22,7 +24,7 @@ var mappings = [
 		}
 	},
 	{
-		"name": "numpad",
+		"name": "the numpad",
 		"type": "keyboard",
 		"keys": {
 			"LEFT": 100,
@@ -32,7 +34,7 @@ var mappings = [
 		}
 	},
 	{
-		"name": "SNES controler",
+		"name": "a SNES controler",
 		"type": "gamepad",
 		"id": "0079-0011-USB Gamepad ",
 		"axes": [
@@ -67,7 +69,7 @@ export default function startControlerConfig() {
 		// When the first user input is picked
 		if (targetIndex == 0) {
 			// Set the waiting text
-			document.getElementById("overlay").children[targetIndex].innerHTML = `Using ${mapping.name}, pls wait for player 2`;
+			document.getElementById("overlay").children[targetIndex].children[1].innerHTML = `Using ${mapping.name}, please wait for player 2`;
 
 			// Go to the bottom app
 			targetIndex++;
@@ -75,25 +77,37 @@ export default function startControlerConfig() {
 
 			// Set the display of the bottom app
 			document.getElementById("overlay").children[targetIndex].className = "waiting";
-			document.getElementById("overlay").children[targetIndex].innerHTML = "Press any key";
+			document.getElementById("overlay").children[targetIndex].children[1].innerHTML = "Press any key";
 		}
 		// When the second user picks a input
 		else if (targetIndex == 1) {
 			// We can't have 2 oof the same controls
 			if (TAPP.inputProfile.name == mapping.name) {
-				document.getElementById("overlay").children[targetIndex].innerHTML = "Can't use the same as player 1, use any other key";
+				document.getElementById("overlay").children[targetIndex].children[0].innerHTML = "Can't use the same as player 1, use any other controler";
 				document.getElementById("overlay").children[targetIndex].className = "waiting";
 
 				target.inputProfile = false;
 				return;
 			}
 
-			// Close the overlay
-			document.getElementById("overlay").style.display = "none";
+			document.getElementById("overlay").children[targetIndex].className = "idle";
+
+			document.getElementById("overlay").children[0].children[1].innerHTML = "Ready!";
+			document.getElementById("overlay").children[1].children[1].innerHTML = "Ready!";
 
 			// Remove the listeners
 			window.removeEventListener("keydown", keyboardListener);
 			window.removeEventListener("gamepadconnected", gamepadListener);
+
+			setTimeout(function () {
+				document.getElementById("overlay").children[0].className = "ready";
+				document.getElementById("overlay").children[1].className = "ready";
+
+				setTimeout(function () {
+					// Close the overlay
+					document.getElementById("overlay").style.display = "none";
+				}, 200);
+			}, 800);
 		}
 	}
 
