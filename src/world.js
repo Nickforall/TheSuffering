@@ -14,7 +14,17 @@ export default class World {
 		this.bump = new Bump();
 
 		this.addEntity(new Player(this, 0, 0))
+		// Add Enemy enitities
 		// this.addEntity(new Enemy(this, 300, 500))
+		let x = (Math.floor(Math.random() * 1500) + 100);
+		console.log("slime position: " + x);
+		let speed = (Math.floor(Math.random() * 5) + 1);
+		this.addEntity(new Enemy(this, x, 0, speed))
+		// for (var i = 0; i < 25; i++) {
+		// 	let speed = (Math.floor(Math.random() * 5) + 1);
+		// 	let x = (Math.floor(Math.random() * 1500) + 100);
+		// 	this.addEntity(new Enemy(this, x, 0, speed))
+		// }
 
 		this.createColliders();
 
