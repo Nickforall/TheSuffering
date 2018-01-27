@@ -74,9 +74,8 @@ export default class Enemy extends GameObject {
     healthbarUpdate() {
         // set healthbar width to enemy health
         this.healthbar.width = this.health;
-
         if (this.health <= 0) {
-            // if health is 0 do somethign
+            this.world.player.xpBar.addXP(10);
         } else {
             // for testing purposes
             this.health -= 0.1;

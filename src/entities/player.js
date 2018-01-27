@@ -1,7 +1,11 @@
 import GameObject from "../gameobject";
 import Gun from "../equipment/gun";
 import Vector2D from "../utils/vector2d";
+<<<<<<< HEAD
 import Enemy from "./enemy";
+=======
+import xpbar from "../../ui/xpbar";
+>>>>>>> 579c3078a5a7f9b99ec94cd3b124eadb4c76c2bd
 
 //some definitions
 let punching = false;
@@ -19,7 +23,7 @@ export default class Player extends GameObject {
          * @param {Object}   context The this object passed
          */
         function addListener(name, func, context) {
-            window.addEventListener(name, function(event) {
+            window.addEventListener(name, function (event) {
                 if (context.app.inputProfile.type != "keyboard") return;
 
                 for (var command in context.app.inputProfile.keys) {
@@ -44,16 +48,24 @@ export default class Player extends GameObject {
         this.sprite.scale.set(3, 3);
         this.sprite.playAnimation([0, 3]);
 
-        this.sprite.vy = 10;
-        this.sprite.vx = 0;
+        this.sprite.vy = y;
+        this.sprite.vx = x;
 
         this.world.context.stage.addChild(this.sprite);
 
         this.pressedButtons = {};
         this.app = world.context;
 
+<<<<<<< HEAD
         this.isBeingDamaged = false;
         this.lives = 3;
+=======
+        //adding value to player
+        this.experience;
+
+        //making instances of xpdrawer
+        this.xpBar = new xpbar(this);
+>>>>>>> 579c3078a5a7f9b99ec94cd3b124eadb4c76c2bd
 
         // Listen to the keydown event and call the handler if it's a bound one
         addListener("keydown", this._handleDown, this)
@@ -111,10 +123,10 @@ export default class Player extends GameObject {
     _jump() {
         this.sprite.vy = -20;
         // this.jumped = true;
-        if(this.pressedButtons.JUMP){
-            if(this.playerOrientation === "right"){
+        if (this.pressedButtons.JUMP) {
+            if (this.playerOrientation === "right") {
                 this.sprite.show(32);
-            } else if (this.playerOrientation === "left"){
+            } else if (this.playerOrientation === "left") {
                 this.sprite.show(35);
             }
         }
@@ -124,7 +136,7 @@ export default class Player extends GameObject {
         if (this.punching === false) {
             this.punching = true;
             this.sprite.vx = 0;
-            if(this.playerOrientation === "right"){
+            if (this.playerOrientation === "right") {
                 this.sprite.playAnimation([4, 7]);
                 setTimeout(() => {
                     // player.playAnimation([0, 3]);
@@ -143,7 +155,7 @@ export default class Player extends GameObject {
                     };
                     this.punching = false;
                 }, 400);
-            } else if (this.playerOrientation === "left"){
+            } else if (this.playerOrientation === "left") {
                 this.sprite.playAnimation([24, 27]);
                 setTimeout(() => {
                     // player.playAnimation([28, 31]);
@@ -174,7 +186,7 @@ export default class Player extends GameObject {
         switch (code) {
             case "LEFT":
                 this.pressedButtons.LEFT = false;
-                if (!this.pressedButtons.RIGHT  && punching === false) {
+                if (!this.pressedButtons.RIGHT && punching === false) {
                     this.sprite.playAnimation([28, 31]);
                     this.playerOrientation = "left";
                 }
@@ -227,7 +239,7 @@ export default class Player extends GameObject {
 
 
             for (let _command in this.app.inputProfile.buttons) {
-				if (!this.app.inputProfile.buttons.hasOwnProperty(_command)) continue;
+                if (!this.app.inputProfile.buttons.hasOwnProperty(_command)) continue;
 
                 if (this.app.inputProfile.buttons[_command] == i) {
                     command = _command;
@@ -270,7 +282,7 @@ export default class Player extends GameObject {
 
     update() {
         // super.update();
-        let collision  = this.world.willCollide(this.sprite);
+        let collision = this.world.willCollide(this.sprite);
 
         if (collision == "left" && this.pressedButtons.LEFT) {
             this.sprite.playAnimation([28, 31]);
@@ -281,6 +293,7 @@ export default class Player extends GameObject {
             this.playerOrientation = "right";
         }
 
+<<<<<<< HEAD
         let entityCollision = this.world.getCollidedEntites(this.sprite)
         if (entityCollision !== null) {
             if(entityCollision instanceof Enemy && !this.isBeingDamaged) {
@@ -293,6 +306,8 @@ export default class Player extends GameObject {
                 this._damage();
             }
         }
+=======
+>>>>>>> 579c3078a5a7f9b99ec94cd3b124eadb4c76c2bd
 
         if (this.sprite.vy < 10) {
             this.sprite.vy += 1;
@@ -305,7 +320,17 @@ export default class Player extends GameObject {
             this.sprite.vx = 5;
         }
 
+        // check player position (testing)
+        // console.log("player X:" + this.sprite.position.x + " Y:" + this.sprite.position.y);
 
+        // check if player is under map
+        if (this.sprite.position.y > 600) {
+            // let currentvy = this.sprite.vy;wd
+            let currentvx = this.sprite.position.x;
+
+            this.sprite.position.y = 0;
+            this.sprite.position.x = (currentvx - 200);
+        }
 
         // if(this.jumped === true){
         //     if(this.sprite.vy >= 0){
