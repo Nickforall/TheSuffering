@@ -6,126 +6,145 @@ export default class Player extends GameObject {
     constructor(world, x, y) {
         super(world, x, y, 1);
 
+        /**
+         * Add a listener to key events
+         * @param {String}   name    The event name
+         * @param {Function} func    The callback
+         * @param {Object}   context The this object passed
+         */
+        function addListener(name, func, context) {
+            window.addEventListener(name, function(event) {
+                if (context.app.inputProfile.type != "keyboard") return;
+
+                for (var command in context.app.inputProfile.keys) {
+                    if (!context.app.inputProfile.keys.hasOwnProperty(command)) continue;
+
+                    if (context.app.inputProfile.keys[command] == event.keyCode) {
+                        func.bind(context)(command);
+                    }
+                }
+            }.bind(context));
+        }
+
         this.gun = new Gun(this);
 
         this.sprite = new PIXI.Sprite(
 			PIXI.loader.resources["test"].texture
 		);
+
 		this.sprite.scale.x = 0.1;
         this.sprite.scale.y = 0.1;
 
         this.world.context.stage.addChild(this.sprite);
 
-        this.pressedButtons = []
+        this.pressedButtons = {};
+        this.app = world.context;
 
-        window.addEventListener("keydown", this.handleKeyEvent.bind(this));
+        // Listen to the keydown event and call the handler if it's a bound one
+        addListener("keydown", this._handleDown, this)
+        addListener("keyup", this._handleUp, this)
     }
 
-    handleKeyEvent(ev) {
-        switch(ev.keyCode) {
-            // A key or left on gamepad
-            case 65:
-                this.position.x -= 5
+    /**
+     * Handle a key/button down event
+     * @param  {String} code Uppercase action command
+     */
+    _handleDown(code) {
+        this.pressedButtons[code] = true;
+
+        switch (code) {
+            case "LEFT":
+                this.pressedButtons.LEFT = true;
                 break;
-            // D key or right on gamepad
-            case 68:
-                this.position.x += 5
+            case "RIGHT":
+                this.pressedButtons.RIGHT = true;
                 break;
-            // SPACE or B on gamepad
-            case 32:
+            case "JUMP":
                 this.applyForce(new Vector2D(0, -7));
                 break;
-            // E key or A on gamepad
-            case 69:
+            case "ATTACK":
                 this.gun.spawnBullet();
+                break;
+        }
+    }
+
+    /**
+     * Handle a key/button up event
+     * @param  {String} code Uppercase action command
+     */
+    _handleUp(code) {
+        switch (code) {
+            case "LEFT":
+                this.pressedButtons.LEFT = false;
+                break;
+            case "RIGHT":
+                this.pressedButtons.RIGHT = false;
                 break;
         }
     }
 
     _pollGamepad() {
         /**
-         * Translate the button index on a gamepad to a keyboard keyCode
-         * @param  {Int} button The button index
-         * @return {Int}        A keycode
-         */
-        function translateButton(button) {
-            // Default mapping for SNES controller
-            let mapping = {
-                1: 69,
-                2: 32
-            }
-
-            // Return -1 if the index is not bound
-            return mapping[button] ? mapping[button] : -1
-        }
-
-        /**
-         * Make a fake key event and send it to the handler
-         * @param  {Int} key     The keycode to send
-         * @param  {Obj} context Context of the class
-         */
-        function sendKeyEvent(key, context) {
-            context.handleKeyEvent({
-                keyCode: key
-            })
-        }
-
-        /**
          * Do a check on change of asis buttons
          * @param  {Int}  truethy If the value is this, the button is pressed
          * @param  {Int}  value   The current button state
-         * @param  {Int}  keyCode Keycode to send if pressed
+         * @param  {Int}  command Command to send if pressed
          * @param  {Obj}  context Context of the class
          */
-        function checkAxis(truethy, value, keyCode, context) {
+        function checkAxis(truethy, value, command, context) {
             // On button press
-            if (value == truethy && !context.pressedButtons[keyCode]) {
-                sendKeyEvent(keyCode, context)
-                context.pressedButtons[keyCode] = true
+            if (value == truethy && !context.pressedButtons[command]) {
+                context._handleDown(command);
             }
 
             // On button release
-            else if (value != truethy && context.pressedButtons[keyCode]) {
-                context.pressedButtons[keyCode] = false
+            else if (value != truethy && context.pressedButtons[command]) {
+                context._handleUp(command);
             }
         }
+
+        // If the active profile isn't a gamepad this does not need to be executed
+        if (this.app.inputProfile.type != "gamepad") return
 
         // Get all gamepads
-        let gamepads = navigator.getGamepads()
+        let gamepads = navigator.getGamepads();
 
-        // TODO: Add some sore of thingy to select what gamepad to use for what app
-        if (gamepads[0]) {
-            let gp = gamepads[0]
+        // Only get the picked controler
+            let gp = gamepads[0];
 
-            // Loop through all buttons to get their state
-            for (var i = 0; i < gp.buttons.length; i++) {
-                let key = translateButton(i)
+        // Loop through all buttons to get their state
+        for (var i = 0; i < gp.buttons.length; i++) {
+            let command = false;
 
-                // Ignore keys that we haven't bound
-                if (key == -1) {
-                    continue
-                }
+            for (let _command in this.app.inputProfile.buttons) {
+				if (!this.app.inputProfile.buttons.hasOwnProperty(_command)) continue;
 
-                // On button press
-                if (gp.buttons[i].pressed && !this.pressedButtons[key]) {
-                    console.debug(`Button ${i}(${key}) pressed on ${gp.id}`);
-
-                    sendKeyEvent(key, this)
-
-                    this.pressedButtons[key] = true
-                }
-
-                // On button release
-                else if (!gp.buttons[i].pressed && this.pressedButtons[key]) {
-                    this.pressedButtons[key] = false
+                if (this.app.inputProfile.buttons[_command] == i) {
+                    command = _command;
                 }
             }
 
-            // Check left, up and down keys
-            checkAxis(-1, gp.axes[0], 65, this)
-            checkAxis(1, gp.axes[0], 68, this)
-            checkAxis(-1, gp.axes[1], 32, this)
+            // Ignore keys that we haven't bound
+            if (!command) continue;
+
+            // On button press
+            if (gp.buttons[i].pressed && !this.pressedButtons[command]) {
+                console.debug(`Button ${command} pressed on ${gp.id}`);
+                console.log(this.pressedButtons);
+                this._handleDown(command);
+            }
+
+            // On button release
+            else if (!gp.buttons[i].pressed && this.pressedButtons[command]) {
+                this.pressedButtons[command] = false;
+                this._handleUp(command);
+            }
         }
+
+        // Check left, up and down keys
+        checkAxis(-1, gp.axes[0], "LEFT", this);
+        checkAxis(1, gp.axes[0], "RIGHT", this);
+        checkAxis(-1, gp.axes[1], "JUMP", this);
     }
 
     update() {
@@ -134,6 +153,13 @@ export default class Player extends GameObject {
         this.sprite.x = this.position.x;
         this.sprite.y = this.position.y;
 
-        this._pollGamepad()
+        if (this.pressedButtons["LEFT"]) {
+            this.position.x -= 5;
+        }
+        if (this.pressedButtons["RIGHT"]) {
+            this.position.x += 5;
+        }
+
+        this._pollGamepad();
     }
 }
