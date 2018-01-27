@@ -29,7 +29,7 @@ export default class Player extends GameObject {
                 break;
             // D key or right on gamepad
             case 68:
-                this.position.x += 5(-1, gp.axes[1], 32
+                this.position.x += 5
                 break;
             // SPACE or B on gamepad
             case 32:
