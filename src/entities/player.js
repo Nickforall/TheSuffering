@@ -50,7 +50,7 @@ export default class Player extends GameObject {
 
         this.pressedButtons = {};
         this.app = world.context;
-
+        this.flying = false
 
         // Listen to the keydown event and call the handler if it's a bound one
         addListener("keydown", this._handleDown, this)
@@ -84,9 +84,10 @@ export default class Player extends GameObject {
                 this.playerOrientation = "right";
                 break;
             case "JUMP":
-                if (this.pressedButtons.JUMP !== true) {
+                if (this.pressedButtons.JUMP !== true && !this.flying) {
                     this.pressedButtons.JUMP = true;
                     this._jump();
+                    this.flying = true
                 }
                 break;
             case "ATTACK":
@@ -265,6 +266,10 @@ export default class Player extends GameObject {
         else if (collision == "right" && this.pressedButtons.RIGHT) {
             this.sprite.playAnimation([0, 3]);
             this.playerOrientation = "right";
+        }
+
+        if (collision == "bottom" && this.flying) {
+            this.flying = false
         }
 
         if (this.sprite.vy < 10) {
