@@ -51,7 +51,6 @@ export default class Player extends GameObject {
 
         this.pressedButtons = {};
         this.app = world.context;
-        this.flying = false
 
         //adding value to player
         this.experience;
@@ -91,10 +90,9 @@ export default class Player extends GameObject {
                 this.playerOrientation = "right";
                 break;
             case "JUMP":
-                if (this.pressedButtons.JUMP !== true && !this.flying) {
+                if (this.pressedButtons.JUMP !== true) {
                     this.pressedButtons.JUMP = true;
                     this._jump();
-                    this.flying = true
                 }
                 break;
             case "ATTACK":
@@ -275,9 +273,6 @@ export default class Player extends GameObject {
             this.playerOrientation = "right";
         }
 
-        if (collision == "bottom" && this.flying) {
-            this.flying = false
-        }
 
         if (this.sprite.vy < 10) {
             this.sprite.vy += 1;
