@@ -55,4 +55,6 @@ window.addEventListener("DOMContentLoaded", () => {
 				document.getElementById("loader").style.display = "none"
 			}, 400);
 		});
+
+	document.getElementById("loader").style.backgroundImage = 'url("resources/loadWater.png")'
 });
