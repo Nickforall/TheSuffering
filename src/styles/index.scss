@@ -19,9 +19,10 @@ body {
 	position: fixed;
 	display: flex;
 	flex-direction: column;
+	opacity: 1;
+	transition: opacity .1s;
 
 	> div {
-		display: none;
 		font-family: 'VT323', monospace;
 		flex: 1;
 		transition: background 0.2s, opacity 0.2s;
@@ -100,9 +101,11 @@ body {
 	font-family: 'VT323', monospace;
 	text-align: center;
 	background-color: #639bff;
-	background-image: url(""); //resources/loadwater.png
+	background-image: url("");
 	background-repeat: repeat-x;
 	background-position: 0% bottom;
+	opacity: 1;
+	transition: opacity .5s ease-in;
 	animation: waves 2.4s infinite linear;
 
 	h1 {
@@ -116,6 +119,12 @@ body {
 	progress {
 		height: 20px;
 		width: 200px;
+	}
+
+	progress[value] {
+		width: 250px;
+		height: 25px;
+		background-color: transparent;
 	}
 
 	img {

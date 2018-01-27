@@ -52,7 +52,10 @@ window.addEventListener("DOMContentLoaded", () => {
 			startControlerConfig()
 
 			setTimeout(() => {
-				document.getElementById("loader").style.display = "none"
+				document.getElementById("loader").style.opacity = 0
+				setTimeout(() => {
+					document.getElementById("loader").style.display = "none"
+				}, 200);
 			}, 400);
 		});
 

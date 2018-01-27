@@ -77,7 +77,7 @@ export default function startControlerConfig() {
 
 			// Set the display of the bottom app
 			document.getElementById("overlay").children[targetIndex].className = "waiting";
-			document.getElementById("overlay").children[targetIndex].children[1].innerHTML = "Press any key";
+			document.getElementById("overlay").children[targetIndex].children[1].innerHTML = "Press other keys we programmed in";
 		}
 		// When the second user picks a input
 		else if (targetIndex == 1) {
@@ -99,14 +99,13 @@ export default function startControlerConfig() {
 			window.removeEventListener("keydown", keyboardListener);
 			window.removeEventListener("gamepadconnected", gamepadListener);
 
-			setTimeout(function () {
-				document.getElementById("overlay").children[0].className = "ready";
-				document.getElementById("overlay").children[1].className = "ready";
+			setTimeout(() => {
+				document.getElementById("overlay").style.opacity = 0;
 
-				setTimeout(function () {
+				setTimeout(() => {
 					// Close the overlay
 					document.getElementById("overlay").style.display = "none";
-				}, 200);
+				}, 1000);
 			}, 800);
 		}
 	}
