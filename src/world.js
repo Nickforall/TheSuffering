@@ -40,11 +40,80 @@ export default class World {
 		});
 	}
 
+	isTop() {
+		return this.context.pos === "TAPP";
+	}
+
+	isBottom() {
+		return this.context.pos === "BAPP";
+	}
+
+	//make a shit load of colliders
 	createColliders() {
-		// this.colliders.push(new Collider(0, 200, 100, 100));
+		//block the beginning
+		this.colliders.push(new Collider(-100, 1000, 1200, 100, this));
+
 		this.colliders.push(new Collider(0, 140, 100, 860, this));
-		this.colliders.push(new Collider(1050, 140, 100, 500, this));
-		this.colliders.push(new Collider(1550, 180, 100, 200, this));
+		this.colliders.push(new Collider(1050, 140, 100, 500, this)); //190 water
+		this.colliders.push(new Collider(1550, 180, 100, 550, this));
+		this.colliders.push(new Collider(2300, 140, 100, 300, this)); //200 water
+		this.colliders.push(new Collider(2600, 180, 100, 300, this));
+		this.colliders.push(new Collider(2900, 230, 100, 550, this));
+		this.colliders.push(new Collider(3650, 140, 100, 770, this)); //200 water
+		this.colliders.push(new Collider(4420, 230, 100, 470, this));
+		this.colliders.push(new Collider(4890, 180, 100, 300, this));
+		this.colliders.push(new Collider(5190, 140, 100, 100, this));
+
+		this.colliders.push(new Collider(5290, 140, 100, 850, this));
+		this.colliders.push(new Collider(6330, 140, 100, 500, this)); //190 water
+		this.colliders.push(new Collider(6830, 180, 100, 560, this));
+		this.colliders.push(new Collider(7580, 140, 100, 300, this)); //190 water
+		this.colliders.push(new Collider(7880, 180, 100, 300, this));
+		this.colliders.push(new Collider(8180, 230, 100, 550, this));
+		this.colliders.push(new Collider(8930, 140, 100, 770, this)); //200 water
+		this.colliders.push(new Collider(9700, 230, 100, 470, this));
+		this.colliders.push(new Collider(10170, 180, 100, 300, this));
+		this.colliders.push(new Collider(10470, 140, 100, 100, this));
+
+		this.colliders.push(new Collider(10570, 140, 100, 850, this));
+		this.colliders.push(new Collider(11610, 140, 100, 500, this)); //190 water
+		this.colliders.push(new Collider(12110, 180, 100, 560, this));
+		this.colliders.push(new Collider(12860, 140, 100, 300, this)); //190 water
+		this.colliders.push(new Collider(13160, 180, 100, 300, this));
+		this.colliders.push(new Collider(13460, 230, 100, 550, this));
+		this.colliders.push(new Collider(14210, 140, 100, 770, this)); //200 water
+		this.colliders.push(new Collider(14980, 230, 100, 470, this));
+		this.colliders.push(new Collider(15450, 180, 100, 300, this));
+		this.colliders.push(new Collider(15750, 140, 100, 100, this));
+
+		this.colliders.push(new Collider(15850, 140, 100, 850, this));
+		this.colliders.push(new Collider(16890, 140, 100, 500, this)); //190 water
+		this.colliders.push(new Collider(17390, 180, 100, 560, this));
+		this.colliders.push(new Collider(18140, 140, 100, 300, this)); //190 water
+		this.colliders.push(new Collider(18440, 180, 100, 300, this));
+		this.colliders.push(new Collider(18740, 230, 100, 550, this));
+		this.colliders.push(new Collider(19490, 140, 100, 770, this)); //200 water
+		this.colliders.push(new Collider(20260, 230, 100, 470, this));
+		this.colliders.push(new Collider(20730, 180, 100, 300, this));
+		this.colliders.push(new Collider(21030, 140, 100, 100, this));
+
+		this.colliders.push(new Collider(21130, 140, 100, 850, this));
+		this.colliders.push(new Collider(22170, 140, 100, 500, this)); //190 water
+		this.colliders.push(new Collider(22670, 180, 100, 560, this));
+		this.colliders.push(new Collider(23420, 140, 100, 300, this)); //190 water
+		this.colliders.push(new Collider(23720, 180, 100, 300, this));
+		this.colliders.push(new Collider(24020, 230, 100, 550, this));
+		this.colliders.push(new Collider(24770, 140, 100, 770, this)); //200 water
+		this.colliders.push(new Collider(25540, 230, 100, 470, this));
+		this.colliders.push(new Collider(26010, 180, 100, 300, this));
+		this.colliders.push(new Collider(26310, 140, 100, 100, this));
+
+		//end of 5x looping part, now boss plane
+		this.colliders.push(new Collider(26410, 140, 100, 3580, this));
+
+		//block the end
+		this.colliders.push(new Collider(29990, 1000, 1200, 100, this));
+
 
 		for (const colliderObject of this.colliders) {
 			this.context.stage.addChild(colliderObject.rectangle);

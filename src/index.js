@@ -22,6 +22,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 		// Let the context resize
 		window[context].renderer.autoResize = true;
+		window[context].pos = context;
 
 		window[context].world = new World(window[context]);
 		window[context].inputProfile = false;

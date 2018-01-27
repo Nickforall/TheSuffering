@@ -5,6 +5,7 @@ export default class Collider {
         this.height = height;
         this.width = width;
 
+        //uncomment fills to see colliders (in case of dev emergency)
         let platform = new PIXI.Graphics();
         // platform.beginFill(0xCCFF99);
         platform.drawRect(0, 0, this.width, this.height);
