@@ -14,7 +14,7 @@ export default class World {
 		this.bump = new Bump();
 
 		this.addEntity(new Player(this, 0, 0))
-		this.addEntity(new Enemy(this, 300, 500))
+		// this.addEntity(new Enemy(this, 300, 500))
 
 		this.createColliders();
 
@@ -26,30 +26,27 @@ export default class World {
 
 	createColliders() {
 		this.colliders.push(new Collider(0, 200, 100, 100));
-		this.colliders.push(new Collider(100, 250, 100, 100));
-
+		this.colliders.push(new Collider(100, 250, 50, 400));
 
 		for (const colliderObject of this.colliders) {
 			this.context.stage.addChild(colliderObject.rectangle);
 		}
 	}
 
-	willCollide(predictedLocation) {
-		for (const colliderObject of this.colliders) {
-			if (this.bump.hit({ x: predictedLocation.x, y: predictedLocation.y }, colliderObject.rectangle)) {
-				return colliderObject
-			}
+	willCollide(sprite) {
+		var collidables = [];
+		for (const coll of this.colliders) {
+			collidables.push(coll.rectangle)
 		}
 
-		for (const entity of this.entities) {
-			if (entity.sprite) {
-				if (this.bump.hit({ x: predictedLocation.x, y: predictedLocation.y }, entity.sprite)) {
-					return colliderObject
-				}
+		// todo, do something later
+		/*for (const entity of this.entities) {
+			if (entity.sprite && !(entity instanceof Player)) {
+				collidables.push(entity.sprite)
 			}
-		}
+		}*/
 
-		return null;
+		this.bump.hit(sprite, collidables, true, false, false);
 	}
 
 	getContext() {
