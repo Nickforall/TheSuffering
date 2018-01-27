@@ -1,5 +1,6 @@
 import GameObject from "./gameobject";
 import Player from "./entities/player";
+import Enemy from "./entities/enemy";
 
 export default class World {
 	constructor(context) {
@@ -8,11 +9,12 @@ export default class World {
 		this.gravity = 1;
 
 		this.addEntity(new Player(this, 0, 0))
+		this.addEntity(new Enemy(this, 300, 500))
 
 		// Listen for new gamepads
-		window.addEventListener("gamepadconnected", function(event) {
-            console.info(`New gamepad connected: ${event.gamepad.id}`);
-        });
+		window.addEventListener("gamepadconnected", function (event) {
+			console.info(`New gamepad connected: ${event.gamepad.id}`);
+		});
 	}
 
 	getContext() {
