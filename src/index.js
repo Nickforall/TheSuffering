@@ -35,6 +35,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 	PIXI.loader
 		.add("test", "resources/physicstest.png")
+		.add("../resources/level.png")
 		.add("../resources/player.json")
 		.add("../resources/slime.json")
 		.on("progress", (loader) => {
