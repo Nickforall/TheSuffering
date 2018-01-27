@@ -56,7 +56,7 @@ export default class Player extends GameObject {
         this.experience;
         
         //making instances of xpdrawer
-        let xpBar = new xpbar(this);
+        this.xpBar = new xpbar(this);
 
         // Listen to the keydown event and call the handler if it's a bound one
         addListener("keydown", this._handleDown, this)

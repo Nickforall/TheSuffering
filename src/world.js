@@ -17,9 +17,11 @@ export default class World {
 		this.worldsprite.anchor.set(0, 1);
 		this.worldsprite.scale.set(3, 3);
 
-        this.context.stage.addChild(this.worldsprite);
+		this.context.stage.addChild(this.worldsprite);
+		
+		this.player = new Player(this,0,0)
 
-		this.addEntity(new Player(this, 0, 0))
+		this.addEntity(this.player)
 		// Add Enemy enitities
 		// this.addEntity(new Enemy(this, 300, 500))
 		let x = (Math.floor(Math.random() * 1500) + 100);
@@ -31,6 +33,7 @@ export default class World {
 		// 	let x = (Math.floor(Math.random() * 1500) + 100);
 		// 	this.addEntity(new Enemy(this, x, 0, speed))
 		// }
+	
 
 		this.createColliders();
 
