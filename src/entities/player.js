@@ -10,6 +10,7 @@ import Debuff from "../equipment/debuff"
 let punching = false;
 let playerOrientation = "right";
 let jumped = false;
+let shooting = false;
 
 export default class Player extends GameObject {
     constructor(world, x, y) {
@@ -45,7 +46,7 @@ export default class Player extends GameObject {
         this.gun = new Gun(this);
 
         //Player sprite and startanimation
-        let playerTextures = window.spriteUtils.frameSeries(0, 37, "player ", ".ase");
+        let playerTextures = window.spriteUtils.frameSeries(0, 47, "player ", ".ase");
 
         this.sprite = window.spriteUtils.sprite(playerTextures);
         this.sprite.show(12);
@@ -116,6 +117,7 @@ export default class Player extends GameObject {
      */
     _handleDown(code) {
         this.punching = false;
+        this.shooting = false;
 
         switch (code) {
             case "LEFT":
@@ -147,9 +149,13 @@ export default class Player extends GameObject {
                 break;
             case "ATTACK":
                 this.pressedButtons.ATTACK = true;
-                this.sprite.playAnimation([4, 7]);
-                // this.gun.spawnBullet();
-                this._attack();
+                //melee
+                // this._attack();
+                // this.sprite.playAnimation([4, 7]);
+
+                // Shoot
+                this.gun.spawnBullet();
+                this._shoot();
 
                 break;
             case "BUFF":
@@ -223,6 +229,58 @@ export default class Player extends GameObject {
                         this.playerOrientation = "left";
                     };
                     this.punching = false;
+                }, 400);
+            }
+        }
+    }
+
+    _shoot() {
+        if (this.shooting === false) {
+            this.shooting = true;
+            this.container.vx = 0;
+
+            let attackedEntity = this.world.getCollidedEntites(this.attackhitbox);
+            if (attackedEntity instanceof Enemy) {
+                console.log(attackedEntity)
+                attackedEntity.damage(100)
+            }
+
+            if (this.playerOrientation === "right") {
+                this.sprite.playAnimation([38, 42]);
+                setTimeout(() => {
+                    this.shooting = false;
+                    if (this.container.vx > 0) {
+                        this.sprite.playAnimation([8, 15]);
+                        this.playerOrientation = "right";
+                    } else if (this.container.vx < 0) {
+                        this.sprite.playAnimation([16, 23]);
+                        this.playerOrientation = "left";
+                    } else if (this.container.vx === 0 && this.playerOrientation == "right") {
+                        this.sprite.playAnimation([0, 3]);
+                        this.playerOrientation = "right";
+                    } else if (this.container.vx === 0 && this.playerOrientation == "left") {
+                        this.sprite.playAnimation([28, 31]);
+                        this.playerOrientation = "left";
+                    };
+                }, 400);
+            } else if (this.playerOrientation === "left") {
+                this.sprite.playAnimation([43, 47]);
+                setTimeout(() => {
+                    // player.playAnimation([28, 31]);
+                    if (this.container.vx > 0) {
+                        this.sprite.playAnimation([8, 15]);
+                        this.playerOrientation = "right";
+                    } else if (this.container.vx < 0) {
+                        this.sprite.playAnimation([16, 23]);
+                        this.playerOrientation = "left";
+                    } else if (this.container.vx === 0 && this.playerOrientation == "right") {
+                        this.sprite.playAnimation([0, 3]);
+                        playerOrientation = "right";
+                    } else if (this.container.vx === 0 && this.playerOrientation == "left") {
+                        this.sprite.playAnimation([28, 31]);
+                        this.playerOrientation = "left";
+                    };
+                    this.shooting = false;
                 }, 400);
             }
         }
@@ -402,6 +460,7 @@ export default class Player extends GameObject {
 
         this.attackhitbox.y = this.container.y - 64;
         this.attackhitbox.x = this.container.x;
+
         
 
         this.world.context.stage.position.x = this.world.context.view.width / 2;
