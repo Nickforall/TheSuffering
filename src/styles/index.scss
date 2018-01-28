@@ -21,6 +21,10 @@ canvas {
 	}
 }
 
+audio {
+	display: none;
+}
+
 #loader,
 #overlay,
 #ui {
@@ -222,7 +226,7 @@ canvas {
 			background-position: center;
 		}
 	}
-	
+
 	> div:nth-child(2) {
 		position: absolute;
 		left: 5%;

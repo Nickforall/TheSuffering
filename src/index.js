@@ -57,6 +57,9 @@ window.addEventListener("DOMContentLoaded", () => {
 
 			setTimeout(() => {
 				document.getElementById("loader").style.opacity = 0
+
+				document.getElementById("audioBackground").volume = 0.7
+				document.getElementById("audioBackground").play()
 				setTimeout(() => {
 					document.getElementById("loader").style.display = "none"
 				}, 200);
@@ -90,6 +93,13 @@ window.setWinner = function(winner, reason) {
 		moveElem[i].style.opacity = 0
 		saveI(i)
 	}
+
+	document.getElementById("audioBackground").pause()
+
+	setTimeout(() => {
+		document.getElementById("audioLost").currentTime = 0
+		document.getElementById("audioLost").play()
+	}, 100)
 
 	winnerElement.className = "prepair"
 	loserElement.className = "prepair"

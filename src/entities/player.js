@@ -102,6 +102,9 @@ export default class Player extends GameObject {
         //for buff no damage
         this.noDamage = false;
 
+        //for one hit
+        this.oneHit = false;
+
         //making instances of xpdrawer
         this.xpBar = new xpbar(this);
 
@@ -190,6 +193,10 @@ export default class Player extends GameObject {
             this.jumped = true;
             this.container.vy = -20;
             if (this.pressedButtons.JUMP) {
+                // Jump sound
+                document.getElementById("audioJump").currentTime = 0
+    			document.getElementById("audioJump").play()
+
                 if (this.playerOrientation === "right") {
                     this.sprite.show(32);
                 } else if (this.playerOrientation === "left") {
@@ -405,20 +412,26 @@ export default class Player extends GameObject {
                 this.noDamage = false; 
                 console.log(this.noDamage)
                 document.getElementById('buff').style.backgroundImage = "url('../../resources/powerups/placeholder.png')"
-                document.getElementById('buff').style.backgroundColor = ""
             }, 15000);
         }
-        this.experience = 100;
-            console.log(this.noDamage)
+        console.log(this.noDamage)
         if(this.gotGun){
             this.holdBuff = '';
             document.getElementById('buff').style.backgroundImage = "url('../../resources/powerups/placeholder.png')"
+        }
+        if(this.oneHit){
+            
         }
     }
 
     _damage() {
         if(!this.noDamage){
             this.lives -= 1;
+
+            if (!window.won) {
+                document.getElementById("audioAuch").currentTime = 0
+                document.getElementById("audioAuch").play()
+            }
 
             if (this.lives <= 0) {
                 // game over

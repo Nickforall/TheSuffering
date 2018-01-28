@@ -85,6 +85,8 @@ export default function startControlerConfig() {
 			// Set the display of the bottom app
 			document.getElementById("overlay").children[targetIndex].className = "waiting";
 			document.getElementById("overlay").children[targetIndex].children[1].innerHTML = "Press other keys we programmed in";
+
+			document.getElementById("audioSelect").play()
 		}
 		// When the second user picks a input
 		else if (targetIndex == 1) {
@@ -99,6 +101,9 @@ export default function startControlerConfig() {
 
 			document.getElementById("overlay").children[targetIndex].children[0].innerHTML = "Player 2";
 			document.getElementById("overlay").children[targetIndex].className = "idle";
+
+			document.getElementById("audioSelect").currentTime = 0
+			document.getElementById("audioSelect").play()
 
 			document.getElementById("overlay").children[0].children[1].innerHTML = "Ready!";
 			document.getElementById("overlay").children[1].children[1].innerHTML = "Ready!";
