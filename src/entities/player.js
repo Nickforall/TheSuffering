@@ -459,11 +459,7 @@ export default class Player extends GameObject {
                 else {
                     hearts[hearts.length - i - 1].className = ""
                 }
-
-                console.log(hearts[i])
             }
-
-            console.log(this.world.isTop())
 
             this.heartsShown = this.lives
         }
