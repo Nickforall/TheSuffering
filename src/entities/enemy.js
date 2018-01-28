@@ -112,6 +112,7 @@ export default class Enemy extends GameObject {
     }
 
     damage(x) {
+        console.log('damaging for ', x)
         this.health -= x;
 
         if (this.health <= 0 && this.alive) {

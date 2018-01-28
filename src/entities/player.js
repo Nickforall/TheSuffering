@@ -5,6 +5,7 @@ import Enemy from "./enemy";
 import xpbar from "../ui/xpbar"
 import Buff from "../equipment/buff";
 import Debuff from "../equipment/debuff"
+import Boss from "./boss";
 
 export default class Player extends GameObject {
     constructor(world, x, y) {
@@ -107,6 +108,9 @@ export default class Player extends GameObject {
 
         //making instances of xpdrawer
         this.xpBar = new xpbar(this);
+
+        this.interfaceBuff = document.getElementById('buff' + (this.world.isTop() ? 'Top' : 'Bottom'));
+        this.interfaceDebuff = document.getElementById('buff' + (this.world.isTop() ? 'Top' : 'Bottom'));
 
         //making buff instance
         this.buff = new Buff(this);
@@ -212,9 +216,14 @@ export default class Player extends GameObject {
             this.container.vx = 0;
 
             let attackedEntity = this.world.getCollidedEntites(this.attackhitbox);
-            if (attackedEntity instanceof Enemy) {
+            if (attackedEntity instanceof Enemy || attackedEntity instanceof Boss) {
                 console.log(attackedEntity)
-                attackedEntity.damage(100)
+
+                if(this.oneHit) {
+                    attackedEntity.damage(attackedEntity.health);
+                } else {
+                    attackedEntity.damage(50)
+                }
             }
 
             if (this.playerOrientation === "right") {
@@ -265,9 +274,14 @@ export default class Player extends GameObject {
             this.container.vx = 0;
 
             let attackedEntity = this.world.getCollidedEntites(this.attackhitbox);
-            if (attackedEntity instanceof Enemy) {
+            if (attackedEntity instanceof Enemy || attackedEntity instanceof Boss) {
                 console.log(attackedEntity)
-                attackedEntity.damage(100)
+
+                if(this.oneHit) {
+                    attackedEntity.damage(attackedEntity.health);
+                } else {
+                    attackedEntity.damage(50)
+                }
             }
 
             if (this.playerOrientation === "right") {
@@ -401,26 +415,35 @@ export default class Player extends GameObject {
         checkAxis(-1, gp.axes[1], "JUMP", this);
     }
     buffHandler(){
-        console.log(this.gotGun);
         //if player has no damage set timer
-        if(this.noDamage){
+        if(this.noDamage) {
             this.holdBuff = '';
-            console.log(this.noDamage)
-            document.getElementById('buff').style.backgroundColor = "yellow"
-            setTimeout(function(){ 
+            this.sprite.alpha = 0.8;
+
+            this.interfaceBuff.style.backgroundColor = "yellow"
+            setTimeout(() => { 
                 this.holdBuff = '';
                 this.noDamage = false; 
-                console.log(this.noDamage)
-                document.getElementById('buff').style.backgroundImage = "url('../../resources/powerups/placeholder.png')"
+                this.sprite.alpha = 1.0;
+                this.interfaceBuff.style.backgroundImage = "url('../../resources/powerups/placeholder.png')"
+                this.interfaceBuff.style.backgroundColor = ""
             }, 15000);
         }
-        console.log(this.noDamage)
+
         if(this.gotGun){
             this.holdBuff = '';
-            document.getElementById('buff').style.backgroundImage = "url('../../resources/powerups/placeholder.png')"
+            this.interfaceBuff.style.backgroundImage = "url('../../resources/powerups/placeholder.png')"
         }
-        if(this.oneHit){
-            
+
+        if (this.oneHit) {
+            this.interfaceBuff.style.backgroundColor = "yellow"
+
+            setTimeout(() => {
+                this.holdBuff = '';
+                this.oneHit = false;
+                this.interfaceBuff.style.backgroundColor = ""
+                this.interfaceBuff.style.backgroundImage = "url('../../resources/powerups/placeholder.png')"                
+            }, 15000);
         }
     }
 
@@ -460,7 +483,7 @@ export default class Player extends GameObject {
 
         let entityCollision = this.world.getCollidedEntites(this.hitbox)
         if (entityCollision !== null) {
-            if(entityCollision instanceof Enemy) {
+            if(entityCollision instanceof Enemy || entityCollision instanceof Boss) {
                 setTimeout(() => {
                     this.isBeingDamaged = false;
                 }, 2000);

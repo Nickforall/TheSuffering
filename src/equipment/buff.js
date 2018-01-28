@@ -35,7 +35,7 @@ export default class Buffs {
         
     }
     gun(){
-        document.getElementById('buff').style.backgroundImage = "url('../../resources/powerups/gun.png')"
+        this.player.interfaceBuff.style.backgroundImage = "url('../../resources/powerups/gun.png')"
         console.log('gun')
         if(this.player.holdBuff){
             this.player.gotGun = true;
@@ -45,7 +45,7 @@ export default class Buffs {
         }
     }
     oneHit(){
-        document.getElementById('buff').style.backgroundImage = "url('../../resources/powerups/one-hit.png')"
+        this.player.interfaceBuff.style.backgroundImage = "url('../../resources/powerups/one-hit.png')"
         console.log('one hit')
         if(this.player.holdBuff){
             this.player.oneHit = true;
@@ -55,7 +55,7 @@ export default class Buffs {
         }
     }
     noDamage(){
-        document.getElementById('buff').style.backgroundImage = "url('../../resources/powerups/no-damage.png')"
+        this.player.interfaceBuff.style.backgroundImage = "url('../../resources/powerups/no-damage.png')"
         console.log('no damage')
         if(this.player.holdBuff){
             this.player.noDamage = true;

@@ -3,6 +3,7 @@ import Player from "./entities/player";
 import Enemy from "./entities/enemy";
 import Collider from "./collider";
 import Bump from "./utils/bump";
+import Boss from "./entities/boss";
 
 export default class World {
 	constructor(context) {
@@ -20,8 +21,9 @@ export default class World {
 		this.context.stage.addChild(this.worldsprite);
 		
 		this.player = new Player(this,0,0)
-
-		this.addEntity(this.player)
+		
+		this.addEntity(this.player);
+		this.addEntity(new Boss(this, 28300, 0));		
 
 		// Add Enemy enitities
 		for (var i = 0; i < 10; i++) {
@@ -38,8 +40,12 @@ export default class World {
 		});
 
 		// buff/debuff ui placholder
-		document.getElementById('buff').style.backgroundImage = 'url("../resources/powerups/placeholder.png")';
-		document.getElementById('debuff').style.backgroundImage = 'url("../resources/powerups/placeholder.png")';
+		document.getElementById('buffTop').style.backgroundImage = 'url("../resources/powerups/placeholder.png")';
+		document.getElementById('debuffTop').style.backgroundImage = 'url("../resources/powerups/placeholder.png")';
+	
+		document.getElementById('buffBottom').style.backgroundImage = 'url("../resources/powerups/placeholder.png")';
+		document.getElementById('debuffBottom').style.backgroundImage = 'url("../resources/powerups/placeholder.png")';
+
 	}
 
 	isTop() {
@@ -135,7 +141,7 @@ export default class World {
 		for (const entity of this.entities) {
 			if (!(entity instanceof Player)) {				
 				var sprite;
-				if(entity instanceof Enemy) {
+				if(entity instanceof Enemy || entity instanceof Boss) {
 					if (!entity.alive) {
 						continue;
 					}
