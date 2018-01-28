@@ -651,7 +651,5 @@ export default class Player extends GameObject {
 
         this.lastPlayerY = this.container.y;
 
-        console.log(this.pressedButtons.LEFT, this.pressedButtons.RIGHT);
-
     }
 }
