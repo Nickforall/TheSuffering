@@ -6,12 +6,6 @@ import xpbar from "../ui/xpbar"
 import Buff from "../equipment/buff";
 import Debuff from "../equipment/debuff"
 
-//some definitions
-let punching = false;
-let playerOrientation = "right";
-let jumped = false;
-let shooting = false;
-
 export default class Player extends GameObject {
     constructor(world, x, y) {
         super(world, x, y, 1);
@@ -35,6 +29,14 @@ export default class Player extends GameObject {
                 }
             }.bind(context));
         }
+
+        //some definitions
+        this.punching = false;
+        this.playerOrientation = "right";
+        this.jumped = false;
+        this.shooting = false;
+        this.lastPlayerY;
+        this.currentPlayerY;
 
         // create container
         let container = window.spriteUtils.group();
@@ -109,6 +111,15 @@ export default class Player extends GameObject {
         //making debuff instance
         this.debuff = new Debuff(this);
 
+        //Jump shizz
+        // setTimeout(() => {
+        //     if(this.container.y === this.lastPlayerY){
+        //         this.jumped = false;
+        //     }
+        //     this.lastPlayerY = this.container.y;
+        //     console.log("last: " + this.lastPlayerY + " Current: " + this.container.y);
+        // }, 2000);
+
         // Listen to the keydown event and call the handler if it's a bound one
         addListener("keydown", this._handleDown, this)
         addListener("keyup", this._handleUp, this)
@@ -175,13 +186,15 @@ export default class Player extends GameObject {
     }
 
     _jump() {
-        this.container.vy = -20;
-        // this.jumped = true;
-        if (this.pressedButtons.JUMP) {
-            if (this.playerOrientation === "right") {
-                this.sprite.show(32);
-            } else if (this.playerOrientation === "left") {
-                this.sprite.show(35);
+        if(this.jumped === false){
+            this.jumped = true;
+            this.container.vy = -20;
+            if (this.pressedButtons.JUMP) {
+                if (this.playerOrientation === "right") {
+                    this.sprite.show(32);
+                } else if (this.playerOrientation === "left") {
+                    this.sprite.show(35);
+                }
             }
         }
     }
@@ -299,14 +312,14 @@ export default class Player extends GameObject {
         switch (code) {
             case "LEFT":
                 this.pressedButtons.LEFT = false;
-                if (!this.pressedButtons.RIGHT && punching === false) {
+                if (!this.pressedButtons.RIGHT && this.punching === false) {
                     this.sprite.playAnimation([28, 31]);
                     this.playerOrientation = "left";
                 }
                 break;
             case "RIGHT":
                 this.pressedButtons.RIGHT = false;
-                if (!this.pressedButtons.LEFT && punching === false) {
+                if (!this.pressedButtons.LEFT && this.punching === false) {
                     this.sprite.playAnimation([0, 3]);
                     this.playerOrientation = "right";
                 }
@@ -364,7 +377,7 @@ export default class Player extends GameObject {
             // On button press
             if (gp.buttons[i].pressed && !this.pressedButtons[command]) {
                 console.debug(`Button ${command} pressed on ${gp.id}`);
-                console.log(this.pressedButtons);
+                // console.log(this.pressedButtons);
                 this._handleDown(command);
             }
 
@@ -388,14 +401,15 @@ export default class Player extends GameObject {
             console.log(this.noDamage)
             document.getElementById('buff').style.backgroundColor = "yellow"
             setTimeout(function(){ 
-                clearInterval(this.blink);
+                this.holdBuff = '';
                 this.noDamage = false; 
                 console.log(this.noDamage)
                 document.getElementById('buff').style.backgroundImage = "url('../../resources/powerups/placeholder.png')"
                 document.getElementById('buff').style.backgroundColor = ""
-
             }, 15000);
         }
+        this.experience = 100;
+            console.log(this.noDamage)
         if(this.gotGun){
             this.holdBuff = '';
             document.getElementById('buff').style.backgroundImage = "url('../../resources/powerups/placeholder.png')"
@@ -410,6 +424,8 @@ export default class Player extends GameObject {
                 // game over
                 this.sprite.scale.x = 0;
                 this.sprite.scale.y = 0;
+
+                setWinner(this.world.isTop() ? "BAPP" : "TAPP", "No lives left")
             }
         }
     }
@@ -485,11 +501,7 @@ export default class Player extends GameObject {
                 else {
                     hearts[hearts.length - i - 1].className = ""
                 }
-
-                console.log(hearts[i])
             }
-
-            console.log(this.world.isTop())
 
             this.heartsShown = this.lives
         }
@@ -504,6 +516,16 @@ export default class Player extends GameObject {
         this.attackhitbox.y = this.container.y - 64;
         this.attackhitbox.x = this.container.x;
 
+        this.currentPlayerY = this.container.y;
+        // console.log(this.currentPlayerY, this.lastPlayerY);
+        if(this.currentPlayerY === this.lastPlayerY ){
+            if(this.currentPlayerY > -30){
+                console.log(this.currentPlayerY);
+                this.jumped = false;
+            }
+        };
+
+        console.log(this.jumped);
 
         this.world.context.stage.position.x = this.world.context.view.width / 2;
         this.world.context.stage.position.y = this.world.context.view.height / 2;
@@ -518,5 +540,8 @@ export default class Player extends GameObject {
         this.container.vx = 0;
 
         this._pollGamepad();
+
+        this.lastPlayerY = this.container.y;
+
     }
 }
