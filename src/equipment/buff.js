@@ -1,23 +1,27 @@
-import buff from '../../resources/buff.json'
+import Buff from '../../resources/buff.json'
 export default class Buffs {
-    constructor() {
+    constructor(player) {
+        this.player = player;
 
+        //checking player is Top or bottom
     }
-    checkValue(player){
-        if(player.value == 100){
-            randomBuff();
+    //checking value if your xp bar = 100
+    checkValue(){
+        if(this.player.experience >= 100){
+            this.randomBuff();
+            this.player.xpBar.addXP(-100);
         }else{
-            console.log('lol niet genoeg velue')
+            console.log('lol niet genoeg velue');
         }
     }
     //this function is to choose a random buff 
     randomBuff() {
         
         //getting random number for the buffs
-        let id = Math.floor((Math.random() * buff.length) + 1) -1;
+        let id = Math.floor((Math.random() * Buff.length) + 1) -1;
 
         //checking which function to actived
-        switch(buff[id].name){
+        switch(Buff[id].name){
             case 'gun':
                 this.gun();
             break;

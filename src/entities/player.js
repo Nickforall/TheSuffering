@@ -3,6 +3,8 @@ import Gun from "../equipment/gun";
 import Vector2D from "../utils/vector2d";
 import Enemy from "./enemy";
 import xpbar from "../ui/xpbar"
+import Buff from "../equipment/buff";
+import Debuff from "../equipment/debuff"
 
 //some definitions
 let punching = false;
@@ -61,6 +63,12 @@ export default class Player extends GameObject {
         //making instances of xpdrawer
         this.xpBar = new xpbar(this);
 
+        //making buff instance
+        this.buff = new Buff(this);
+
+        //making debuff instance
+        this.debuff = new Debuff(this);
+
         // Listen to the keydown event and call the handler if it's a bound one
         addListener("keydown", this._handleDown, this)
         addListener("keyup", this._handleUp, this)
@@ -106,9 +114,11 @@ export default class Player extends GameObject {
 
                 break;
             case "BUFF":
+                this.buff.checkValue();
                 console.log("BUFF");
                 break;
             case "DEBUFF":
+                this.debuff.checkValue();
                 console.log("DEBUFF");
                 break;
         }
@@ -344,7 +354,11 @@ export default class Player extends GameObject {
         this.world.context.stage.position.x = this.world.context.view.width / 2;
         this.world.context.stage.position.y = this.world.context.view.height / 2;
 
-        this.world.context.stage.pivot.x = this.sprite.x;
+        if (this.sprite.x < this.world.context.view.width / 2) {
+            this.world.context.stage.pivot.x = this.world.context.view.width / 2;
+        } else {
+            this.world.context.stage.pivot.x = this.sprite.x;
+        }
         this.world.context.stage.position.y = this.world.context.view.height / 6;
 
         this.sprite.vx = 0;
