@@ -61,6 +61,8 @@ export default class Enemy extends GameObject {
         let time = 2000;
         this.time = time;
         this.timeoutState = false;
+
+        this.alive = true;
     }
 
     update() {
@@ -109,15 +111,19 @@ export default class Enemy extends GameObject {
 
     }
 
+    damage(x) {
+        this.health -= x;
+
+        if (this.health <= 0 && this.alive) {
+            this.alive = false;
+            this.container.visible = false;
+            this.world.player.xpBar.addXP(10);
+        }
+    }
+
     healthbarUpdate() {
         // set healthbar width to enemy health
         this.healthbar.width = this.health;
-        if (this.health <= 0) {
-            this.world.player.xpBar.addXP(10);
-        } else {
-            // for testing purposes
-            // this.health -= 0.1;
-        }
     }
 
     enemyHoleColliders() {

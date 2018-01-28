@@ -134,18 +134,20 @@ export default class World {
 
 	getCollidedEntites(collidingSprite) {
 		for (const entity of this.entities) {
-			if (!(entity instanceof Player)) {
+			if (!(entity instanceof Player)) {				
 				var sprite;
 				if(entity instanceof Enemy) {
-					sprite = entity.container;
+					if (!entity.alive) {
+						continue;
+					}
+
+					sprite = entity.container;					
 				}
 
 				let collision = this.bump.hit(collidingSprite, sprite);
 
 				if (collision) {
 					return entity;
-				} else {
-					return null;
 				}
 			}
 		}

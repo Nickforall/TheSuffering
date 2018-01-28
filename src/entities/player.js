@@ -35,6 +35,13 @@ export default class Player extends GameObject {
             }.bind(context));
         }
 
+        // create container
+        let container = window.spriteUtils.group();
+        // make container global
+        this.container = container;
+        this.container.x = x;
+        this.container.y = y;
+
         this.gun = new Gun(this);
 
         //Player sprite and startanimation
@@ -47,10 +54,32 @@ export default class Player extends GameObject {
         this.sprite.scale.set(3, 3);
         this.sprite.playAnimation([0, 3]);
 
-        this.sprite.vy = y;
-        this.sprite.vx = x;
+        this.container.vy = y;
+        this.container.vx = x;
 
-        this.world.context.stage.addChild(this.sprite);
+        //uncomment fills to see colliders (in case of dev emergency)
+        this.hitbox = new PIXI.Graphics();
+        // this.hitbox.beginFill(0xff0000);
+        this.hitbox.drawRect(0, 0, 86, 128);
+        // this.hitbox.endFill();
+        this.hitbox.x = this.sprite.x;
+        this.hitbox.y = this.sprite.y;
+        this.hitbox.pivot.set(-36 , -86);
+
+        this.container.addChild(this.sprite);
+
+        this.attackhitbox = new PIXI.Graphics();
+        //this.attackhitbox.beginFill(0xff0000);
+        this.attackhitbox.drawRect(0, 0, 148, 128);
+        //this.attackhitbox.endFill();
+        this.attackhitbox.x = this.sprite.x;
+        this.attackhitbox.y = this.sprite.y;
+        this.attackhitbox.pivot.set(-36 , -86);
+
+        this.world.context.stage.addChild(this.attackhitbox);
+
+        this.world.context.stage.addChild(this.hitbox);        
+        this.world.context.stage.addChild(this.container);
 
         this.pressedButtons = {};
         this.app = world.context;
@@ -72,7 +101,6 @@ export default class Player extends GameObject {
         // Listen to the keydown event and call the handler if it's a bound one
         addListener("keydown", this._handleDown, this)
         addListener("keyup", this._handleUp, this)
-
         // this.addCollisionHandler(this.testCollision.bind(this));
     }
 
@@ -91,6 +119,8 @@ export default class Player extends GameObject {
 
                 this.pressedButtons.LEFT = true;
                 this.playerOrientation = "left";
+
+                this.attackhitbox.pivot.set(44, -86);
                 break;
             case "RIGHT":
                 if (this.pressedButtons.RIGHT !== true) {
@@ -99,6 +129,9 @@ export default class Player extends GameObject {
 
                 this.pressedButtons.RIGHT = true;
                 this.playerOrientation = "right";
+
+                this.attackhitbox.pivot.set(-36 , -86);
+                
                 break;
             case "JUMP":
                 if (this.pressedButtons.JUMP !== true) {
@@ -125,7 +158,7 @@ export default class Player extends GameObject {
     }
 
     _jump() {
-        this.sprite.vy = -20;
+        this.container.vy = -20;
         // this.jumped = true;
         if (this.pressedButtons.JUMP) {
             if (this.playerOrientation === "right") {
@@ -139,21 +172,28 @@ export default class Player extends GameObject {
     _attack() {
         if (this.punching === false) {
             this.punching = true;
-            this.sprite.vx = 0;
+            this.container.vx = 0;
+
+            let attackedEntity = this.world.getCollidedEntites(this.attackhitbox);
+            if (attackedEntity instanceof Enemy) {
+                console.log(attackedEntity)
+                attackedEntity.damage(100)
+            }
+
             if (this.playerOrientation === "right") {
                 this.sprite.playAnimation([4, 7]);
                 setTimeout(() => {
                     // player.playAnimation([0, 3]);
-                    if (this.sprite.vx > 0) {
+                    if (this.container.vx > 0) {
                         this.sprite.playAnimation([8, 15]);
                         this.playerOrientation = "right";
-                    } else if (this.sprite.vx < 0) {
+                    } else if (this.container.vx < 0) {
                         this.sprite.playAnimation([16, 23]);
                         this.playerOrientation = "left";
-                    } else if (this.sprite.vx === 0 && this.playerOrientation == "right") {
+                    } else if (this.container.vx === 0 && this.playerOrientation == "right") {
                         this.sprite.playAnimation([0, 3]);
                         this.playerOrientation = "right";
-                    } else if (this.sprite.vx === 0 && this.playerOrientation == "left") {
+                    } else if (this.container.vx === 0 && this.playerOrientation == "left") {
                         this.sprite.playAnimation([28, 31]);
                         this.playerOrientation = "left";
                     };
@@ -163,16 +203,16 @@ export default class Player extends GameObject {
                 this.sprite.playAnimation([24, 27]);
                 setTimeout(() => {
                     // player.playAnimation([28, 31]);
-                    if (this.sprite.vx > 0) {
+                    if (this.container.vx > 0) {
                         this.sprite.playAnimation([8, 15]);
                         this.playerOrientation = "right";
-                    } else if (this.sprite.vx < 0) {
+                    } else if (this.container.vx < 0) {
                         this.sprite.playAnimation([16, 23]);
                         this.playerOrientation = "left";
-                    } else if (this.sprite.vx === 0 && this.playerOrientation == "right") {
+                    } else if (this.container.vx === 0 && this.playerOrientation == "right") {
                         this.sprite.playAnimation([0, 3]);
                         playerOrientation = "right";
-                    } else if (this.sprite.vx === 0 && this.playerOrientation == "left") {
+                    } else if (this.container.vx === 0 && this.playerOrientation == "left") {
                         this.sprite.playAnimation([28, 31]);
                         this.playerOrientation = "left";
                     };
@@ -241,7 +281,6 @@ export default class Player extends GameObject {
         for (var i = 0; i < gp.buttons.length; i++) {
             let command = false;
 
-
             for (let _command in this.app.inputProfile.buttons) {
                 if (!this.app.inputProfile.buttons.hasOwnProperty(_command)) continue;
 
@@ -286,7 +325,7 @@ export default class Player extends GameObject {
 
     update() {
         // super.update();
-        let collision = this.world.willCollide(this.sprite);
+        let collision = this.world.willCollide(this.container);
 
         if (collision == "left" && this.pressedButtons.LEFT) {
             this.sprite.playAnimation([28, 31]);
@@ -297,44 +336,45 @@ export default class Player extends GameObject {
             this.playerOrientation = "right";
         }
 
-        let entityCollision = this.world.getCollidedEntites(this.sprite)
+        let entityCollision = this.world.getCollidedEntites(this.hitbox)
         if (entityCollision !== null) {
-            if(entityCollision instanceof Enemy && !this.isBeingDamaged) {
-                this.isBeingDamaged = true;
-
+            if(entityCollision instanceof Enemy) {
                 setTimeout(() => {
                     this.isBeingDamaged = false;
                 }, 2000);
 
-                this._damage();
+                if (entityCollision.alive && !this.isBeingDamaged) {
+                    this.isBeingDamaged = true;                    
+                    this._damage();
+                }
             }
         }
 
-        if (this.sprite.vy < 10) {
-            this.sprite.vy += 1;
+        if (this.container.vy < 10) {
+            this.container.vy += 1;
         }
 
         if (this.pressedButtons["LEFT"]) {
-            this.sprite.vx = -5;
+            this.container.vx = -5;
         }
         if (this.pressedButtons["RIGHT"]) {
-            this.sprite.vx = 5;
+            this.container.vx = 5;
         }
 
         // check player position (testing)
         // console.log("player X:" + this.sprite.position.x + " Y:" + this.sprite.position.y);
 
         // check if player is under map
-        if (this.sprite.position.y > 600) {
-            // let currentvy = this.sprite.vy;wd
-            let currentvx = this.sprite.position.x;
+        if (this.container.position.y > 600) {
+            // let currentvy = this.container.vy;wd
+            let currentvx = this.container.position.x;
 
-            this.sprite.position.y = 0;
-            this.sprite.position.x = (currentvx - 200);
+            this.container.position.y = 0;
+            this.container.position.x = (currentvx - 200);
         }
 
         // if(this.jumped === true){
-        //     if(this.sprite.vy >= 0){
+        //     if(this.container.vy >= 0){
         //         if(this.playerOrientation === "right"){
         //             this.sprite.show(33);
         //         } else if (this.playerOrientation === "left") {
@@ -348,21 +388,28 @@ export default class Player extends GameObject {
         // }
 
 
-        this.sprite.y += this.sprite.vy;
-        this.sprite.x += this.sprite.vx;
+        this.container.y += this.container.vy;
+        this.container.x += this.container.vx;
+
+        this.hitbox.y = this.container.y - 64;
+        this.hitbox.x = this.container.x;
+
+        this.attackhitbox.y = this.container.y - 64;
+        this.attackhitbox.x = this.container.x;
+        
 
         this.world.context.stage.position.x = this.world.context.view.width / 2;
         this.world.context.stage.position.y = this.world.context.view.height / 2;
 
-        if (this.sprite.x < this.world.context.view.width / 2) {
+        if (this.container.x < this.world.context.view.width / 2) {
             this.world.context.stage.pivot.x = this.world.context.view.width / 2;
         } else {
-            this.world.context.stage.pivot.x = this.sprite.x;
+            this.world.context.stage.pivot.x = this.container.x;
         }
         this.world.context.stage.position.y = this.world.context.view.height / 6;
 
-        this.sprite.vx = 0;
+        this.container.vx = 0;
 
-        this._pollGamepad();
+        this._pollGamepad();        
     }
 }
