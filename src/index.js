@@ -63,7 +63,7 @@ window.addEventListener("DOMContentLoaded", () => {
 				setTimeout(() => {
 					document.getElementById("loader").style.display = "none"
 				}, 200);
-			}, 400);
+			}, 1800);
 		});
 
 	document.getElementById("loader").style.backgroundImage = 'url("resources/loadWater.png")'
@@ -84,6 +84,8 @@ window.setWinner = function(winner, reason) {
 	let moveElem = Array.prototype.slice.call(document.getElementsByClassName("xpbar"))
 	moveElem.push(document.getElementById("heartsTop"))
 	moveElem.push(document.getElementById("heartsBottom"))
+	moveElem.push(document.getElementById("buffsTop"))
+	moveElem.push(document.getElementById("buffsBottom"))
 
 	for (var i = 0; i < moveElem.length; i++) {
 		function saveI(i) {
