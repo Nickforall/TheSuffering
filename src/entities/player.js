@@ -89,6 +89,12 @@ export default class Player extends GameObject {
         //adding value to player
         this.experience;
 
+        //this method is to check if player has buff
+        this.holdBuff;
+
+        //this method is to check if player has debuff
+        this.holdDebuff;
+
         //making instances of xpdrawer
         this.xpBar = new xpbar(this);
 
@@ -147,11 +153,11 @@ export default class Player extends GameObject {
 
                 break;
             case "BUFF":
-                this.buff.checkValue();
+                this.buff.gotBuff();
                 console.log("BUFF");
                 break;
             case "DEBUFF":
-                this.debuff.checkValue();
+                this.debuff.gotDebuff();
                 console.log("DEBUFF");
                 break;
         }

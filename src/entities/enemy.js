@@ -117,7 +117,7 @@ export default class Enemy extends GameObject {
         if (this.health <= 0 && this.alive) {
             this.alive = false;
             this.container.visible = false;
-            this.world.player.xpBar.addXP(10);
+            this.world.player.xpBar.addXP(40);
         }
     }
 

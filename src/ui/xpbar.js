@@ -8,7 +8,7 @@ export default class xpbar{
             //adding xpbar toe player
             this.player.experienceBar = document.getElementById('xpbarTop') 
             //value of bar is 0 in beginning
-            this.player.experience = 0;
+            this.player.experience = 100;
             //value of player is equel to bar value
             this.player.experienceBar.value = this.player.experience;
         }
@@ -16,7 +16,7 @@ export default class xpbar{
             //adding xpbar toe player
             this.player.experienceBar = document.getElementById('xpbarBottom') 
             //value of bar is 0 in beginning
-            this.player.experience = 0;
+            this.player.experience = 100;
             //value of player is equel to bar value
             this.player.experienceBar.value = this.player.experience;
         }        

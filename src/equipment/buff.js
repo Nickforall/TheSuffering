@@ -8,8 +8,8 @@ export default class Buffs {
     //checking value if your xp bar = 100
     checkValue(){
         if(this.player.experience >= 100){
-            this.randomBuff();
             this.player.xpBar.addXP(-100);
+            this.randomBuff();
         }else{
             console.log('lol niet genoeg velue');
         }
@@ -36,11 +36,39 @@ export default class Buffs {
     }
     gun(){
         console.log('gun')
+        if(!this.player.holdBuff){
+            this.player.holdBuff = 'gun';
+        }
+
     }
     oneHit(){
         console.log('one hit')
+        if(!this.player.holdBuff){
+            this.player.holdBuff = 'oneHit';
+        }
     }
     noDamage(){
         console.log('no damage')
+        if(!this.player.holdBuff){
+            this.player.holdBuff = 'noDamage';
+        }
+    }
+    gotBuff(){
+        if(this.player.holdBuff){
+            console.log('got a buff it is' + this.player.holdBuff)
+            switch(this.player.holdBuff){
+                case 'gun':
+                    this.gun();
+                break;
+                case 'oneHit' :
+                    this.oneHit();
+                break;
+                case 'noDamage' :
+                    this.noDamage();
+                break;
+            }
+        }else{
+            this.checkValue();
+        }
     }
 }
