@@ -37,11 +37,10 @@ window.addEventListener("DOMContentLoaded", () => {
 	PIXI.loader
 		.add("test", "resources/physicstest.png")
 		.add("../resources/level.png")
-		.add("../resources/bullet.png")
+		.add("bullet", "resources/bullet.png")
 		.add("../resources/player.json")
 		.add("../resources/slime.json")
 		.add("../resources/kingslime.json")
-		.add("../resources/shooting.json")
 		.on("progress", (loader) => {
 			document.getElementById("loaderProg").value = loader.progress
 		})

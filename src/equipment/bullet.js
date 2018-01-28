@@ -6,15 +6,15 @@ export default class Bullet extends GameObject {
         this.player = player;
 
         this.sprite = new PIXI.Sprite(
-			PIXI.loader.resources["test"].texture
+			PIXI.loader.resources["bullet"].texture
 		);
         
         this.world.context.stage.addChild(this.sprite);
 
-        this.sprite.scale.x = 0.1;
-        this.sprite.scale.y = 0.1;
+        this.sprite.scale.x = 3;
+        this.sprite.scale.y = 3;
         
-        this.sprite.y = this.player.sprite.y + 30;
+        this.sprite.y = this.player.sprite.y + this.player.sprite.height;
         this.sprite.x = this.player.sprite.x + this.player.sprite.width;
         
     }

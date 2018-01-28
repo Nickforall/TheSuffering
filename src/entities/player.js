@@ -45,7 +45,7 @@ export default class Player extends GameObject {
         this.gun = new Gun(this);
 
         //Player sprite and startanimation
-        let playerTextures = window.spriteUtils.frameSeries(0, 37, "player ", ".ase");
+        let playerTextures = window.spriteUtils.frameSeries(0, 47, "player ", ".ase");
 
         this.sprite = window.spriteUtils.sprite(playerTextures);
         this.sprite.show(12);
@@ -141,9 +141,13 @@ export default class Player extends GameObject {
                 break;
             case "ATTACK":
                 this.pressedButtons.ATTACK = true;
-                this.sprite.playAnimation([4, 7]);
-                // this.gun.spawnBullet();
-                this._attack();
+                //melee
+                // this._attack();
+                // this.sprite.playAnimation([4, 7]);
+
+                // Shoot
+                this.gun.spawnBullet();
+                this.sprite.playAnimation([38, 42]);
 
                 break;
             case "BUFF":
