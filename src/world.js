@@ -27,12 +27,12 @@ export default class World {
 		let x = (Math.floor(Math.random() * 1500) + 100);
 		console.log("slime position: " + x);
 		let speed = (Math.floor(Math.random() * 5) + 1);
-		this.addEntity(new Enemy(this, x, -200, speed, 100))
-		// for (var i = 0; i < 25; i++) {
-		// 	let speed = (Math.floor(Math.random() * 5) + 1);
-		// 	let x = (Math.floor(Math.random() * 1500) + 100);
-		// 	this.addEntity(new Enemy(this, x, 0, speed))
-		// }
+		// this.addEntity(new Enemy(this, x, -200, speed, 100))
+		for (var i = 0; i < 10; i++) {
+			let speed = (Math.floor(Math.random() * 5) + 1);
+			let x = (Math.floor(Math.random() * 24000) + 1500);
+			this.addEntity(new Enemy(this, x, 0, speed, this.player))
+		}
 	
 
 		this.createColliders();

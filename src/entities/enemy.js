@@ -27,7 +27,7 @@ export default class Enemy extends GameObject {
         let slime = window.spriteUtils.sprite(slimeTextures);
         this.sprite = slime;
         slime.show(0);
-        slime.fps = 8;
+        slime.fps = 4;
         slime.scale.set(3, 3);
         slime.pivot.set(-1, 0);
         slime.playAnimation([0, 3]);
@@ -55,6 +55,12 @@ export default class Enemy extends GameObject {
 
         // set container velocity
         this.container.vy = 10;
+
+        let direction = "left";
+        this.direction = direction;
+        let time = 2000;
+        this.time = time;
+        this.timeoutState = false;
     }
 
     update() {
@@ -63,9 +69,41 @@ export default class Enemy extends GameObject {
         // trigger healthbar update function
         this.healthbarUpdate();
 
+        // check if enemy is under map
+        if (this.container.position.y > 600) {
+            // let currentvy = this.sprite.vy;wd
+            let currentvx = this.container.position.x;
+
+            this.container.position.y = 0;
+            this.container.position.x = (currentvx - 200);
+        }
+
         // make container move
-        this.container.position.x -= this.speed;
+        // this.container.position.x -= this.speed;
         this.container.position.y += this.container.vy;
+
+        if(!this.timeoutState){
+            this.timeoutState = true;
+            setTimeout(() => { 
+                if(this.direction === "left"){
+                    this.direction = "right";
+                    // console.log("moving right");
+                    this.time = (Math.floor(Math.random() * 3000) + 1000);
+                } else {
+                    this.direction = "left";
+                    this.time = (Math.floor(Math.random() * 3000) + 1000);
+                    // console.log("moving left");
+                }
+                this.timeoutState = false;
+             }, this.time);
+        }
+        if(this.direction === "left"){
+            this.container.position.x -= this.speed;
+            // console.log(this.time);
+        } else {
+            this.container.position.x += this.speed;
+            // console.log(this.time);
+        }
 
         this.world.willCollide(this.container)
 
@@ -78,7 +116,11 @@ export default class Enemy extends GameObject {
             this.world.player.xpBar.addXP(10);
         } else {
             // for testing purposes
-            this.health -= 0.1;
+            // this.health -= 0.1;
         }
+    }
+
+    enemyHoleColliders() {
+
     }
 }
