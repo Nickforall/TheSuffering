@@ -22,7 +22,7 @@ export default class World {
 		this.player = new Player(this,0,0)
 
 		this.addEntity(this.player)
-		
+
 		// Add Enemy enitities
 		for (var i = 0; i < 10; i++) {
 			let speed = (Math.floor(Math.random() * 5) + 1);
@@ -30,13 +30,16 @@ export default class World {
 			this.addEntity(new Enemy(this, x, 0, speed, this.player))
 		}
 	
-
 		this.createColliders();
 
 		// Listen for new gamepads
 		window.addEventListener("gamepadconnected", function (event) {
 			console.info(`New gamepad connected: ${event.gamepad.id}`);
 		});
+
+		// buff/debuff ui placholder
+		document.getElementById('buff').style.backgroundImage = 'url("../resources/powerups/placeholder.png")';
+		document.getElementById('debuff').style.backgroundImage = 'url("../resources/powerups/placeholder.png")';
 	}
 
 	isTop() {
