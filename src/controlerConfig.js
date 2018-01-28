@@ -84,7 +84,7 @@ export default function startControlerConfig() {
 
 			// Set the display of the bottom app
 			document.getElementById("overlay").children[targetIndex].className = "waiting";
-			document.getElementById("overlay").children[targetIndex].children[1].innerHTML = "Press other keys we programmed in";
+			document.getElementById("overlay").children[targetIndex].children[1].innerHTML = "Press a key or button on an other controller";
 
 			document.getElementById("audioSelect").play()
 		}
@@ -92,7 +92,7 @@ export default function startControlerConfig() {
 		else if (targetIndex == 1) {
 			// We can't have 2 oof the same controls
 			if (TAPP.inputProfile.name == mapping.name) {
-				document.getElementById("overlay").children[targetIndex].children[0].innerHTML = "Can't use the same as player 1, use any other controler";
+				document.getElementById("overlay").children[targetIndex].children[0].innerHTML = "Can't use the same as player 1, use any other controller";
 				document.getElementById("overlay").children[targetIndex].className = "waiting";
 
 				target.inputProfile = false;
