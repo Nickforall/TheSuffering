@@ -385,8 +385,8 @@ export default class Player extends GameObject {
         if(this.noDamage){
             this.experience = 100;
             console.log(this.noDamage,)
-            setTimeout(function(){ 
-                this.noDamage = false; 
+            setTimeout(function(){
+                this.noDamage = false;
                 this.holdBuff = '';
                 console.log(this.noDamage + this.holdBuff)
             }, 15000);
@@ -401,6 +401,8 @@ export default class Player extends GameObject {
                 // game over
                 this.sprite.scale.x = 0;
                 this.sprite.scale.y = 0;
+
+                setWinner(this.world.isTop() ? "BAPP" : "TAPP", "No lives left")
             }
         }
     }

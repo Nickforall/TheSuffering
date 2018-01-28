@@ -67,6 +67,9 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 window.setWinner = function(winner, reason) {
+	if (window.won === true) return
+	window.won = true
+
 	let winnerElement = document.getElementsByTagName("canvas")[0]
 	let loserElement = document.getElementsByTagName("canvas")[1]
 
@@ -109,10 +112,12 @@ window.setWinner = function(winner, reason) {
 			document.getElementById("winBottom").innerHTML = reason
 		}
 
+		document.getElementById(first).className = "win"
 		document.getElementById(first).style.opacity = 1
 		document.getElementById(first).style.transform = "translate(-50%, -50%) scale(1)"
 
 		setTimeout(function () {
+			document.getElementById(last).className = "lose"
 			document.getElementById(last).style.opacity = 1
 			document.getElementById(last).style.transform = "translate(-50%, -50%) scale(.8)"
 		}, 1000)
