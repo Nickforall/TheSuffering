@@ -65,3 +65,61 @@ window.addEventListener("DOMContentLoaded", () => {
 
 	document.getElementById("loader").style.backgroundImage = 'url("resources/loadWater.png")'
 });
+
+window.setWinner = function(winner, reason) {
+	if (window.won === true) return
+	window.won = true
+
+	let winnerElement = document.getElementsByTagName("canvas")[0]
+	let loserElement = document.getElementsByTagName("canvas")[1]
+
+	if (winner == "BAPP") {
+		winnerElement = document.getElementsByTagName("canvas")[1]
+		loserElement = document.getElementsByTagName("canvas")[0]
+	}
+
+	let moveElem = Array.prototype.slice.call(document.getElementsByClassName("xpbar"))
+	moveElem.push(document.getElementById("heartsTop"))
+	moveElem.push(document.getElementById("heartsBottom"))
+
+	for (var i = 0; i < moveElem.length; i++) {
+		function saveI(i) {
+			moveElem[i].style.top = "-30px"
+		}
+
+		moveElem[i].style.opacity = 0
+		saveI(i)
+	}
+
+	winnerElement.className = "prepair"
+	loserElement.className = "prepair"
+
+	setTimeout(function () {
+		winnerElement.className = "win"
+		loserElement.className = "lose"
+	}, 500)
+
+	setTimeout(function () {
+		let first = "winTop"
+		let last = "winBottom"
+
+		if (winner == "BAPP") {
+			document.getElementById("winTop").innerHTML = reason
+			first = "winBottom"
+			last = "winTop"
+		}
+		else {
+			document.getElementById("winBottom").innerHTML = reason
+		}
+
+		document.getElementById(first).className = "win"
+		document.getElementById(first).style.opacity = 1
+		document.getElementById(first).style.transform = "translate(-50%, -50%) scale(1)"
+
+		setTimeout(function () {
+			document.getElementById(last).className = "lose"
+			document.getElementById(last).style.opacity = 1
+			document.getElementById(last).style.transform = "translate(-50%, -50%) scale(.8)"
+		}, 1000)
+	}, 2000)
+}

@@ -99,6 +99,9 @@ export default class Player extends GameObject {
         //this method is to check if player has debuff
         this.holdDebuff;
 
+        //for buff no damage
+        this.noDamage = false;
+
         //making instances of xpdrawer
         this.xpBar = new xpbar(this);
 
@@ -390,15 +393,30 @@ export default class Player extends GameObject {
         checkAxis(1, gp.axes[0], "RIGHT", this);
         checkAxis(-1, gp.axes[1], "JUMP", this);
     }
+    buffHandler(){
+        //if player has no damage set timer
+        if(this.noDamage){
+            this.experience = 100;
+            console.log(this.noDamage,)
+            setTimeout(function(){
+                this.noDamage = false;
+                this.holdBuff = '';
+                console.log(this.noDamage + this.holdBuff)
+            }, 15000);
+        }
+    }
 
     _damage() {
-        this.lives -= 1;
+        if(!this.noDamage){
+            this.lives -= 1;
 
-        if (this.lives <= 0) {
-            // game over
+            if (this.lives <= 0) {
+                // game over
+                this.sprite.scale.x = 0;
+                this.sprite.scale.y = 0;
 
-            this.sprite.scale.x = 0;
-            this.sprite.scale.y = 0;
+                setWinner(this.world.isTop() ? "BAPP" : "TAPP", "No lives left")
+            }
         }
     }
 
@@ -473,12 +491,17 @@ export default class Player extends GameObject {
                 else {
                     hearts[hearts.length - i - 1].className = ""
                 }
+<<<<<<< HEAD
 
                 // console.log(hearts[i])
             }
 
             // console.log(this.world.isTop())
 
+=======
+            }
+
+>>>>>>> 0f748978c3c09c58a631428867b53267b1b7cc21
             this.heartsShown = this.lives
         }
 
