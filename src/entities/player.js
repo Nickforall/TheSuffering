@@ -196,7 +196,7 @@ export default class Player extends GameObject {
                     this.sprite.show(35);
                 }
             }
-        }    
+        }
     }
 
     _attack() {
@@ -491,17 +491,8 @@ export default class Player extends GameObject {
                 else {
                     hearts[hearts.length - i - 1].className = ""
                 }
-<<<<<<< HEAD
-
-                // console.log(hearts[i])
             }
 
-            // console.log(this.world.isTop())
-
-=======
-            }
-
->>>>>>> 0f748978c3c09c58a631428867b53267b1b7cc21
             this.heartsShown = this.lives
         }
 
@@ -541,6 +532,6 @@ export default class Player extends GameObject {
         this._pollGamepad();
 
         this.lastPlayerY = this.container.y;
-        
+
     }
 }
