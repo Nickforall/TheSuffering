@@ -1,11 +1,15 @@
-import debuff from '../../resources/debuff'
+import Debuff from '../../resources/debuff'
 export default class deBuff{
-    constructor(){
+    constructor(player){
+        this.player = player;
 
+        //todo checking if player is top or bottom
     }
-    checkValue(player){
-        if(player.value == 100){
-            randomDeBuff();
+    //checking value if your xp bar = 100
+    checkValue(){
+        if(this.player.experience >= 100){
+            this.randomDeBuff();
+            this.player.xpBar.addXP(-100);
         }else{
             console.log('lol niet genoeg velue')
         }
@@ -14,12 +18,12 @@ export default class deBuff{
     randomDeBuff() {
         
         //getting random number for the buffs
-        let id = Math.floor((Math.random() * debuff.length) + 1) -1;
+        let id = Math.floor((Math.random() * Debuff.length) + 1) -1;
 
         //checking which function to actived
-        switch(debuff[id].name){
+        switch(Debuff[id].name){
             case 'noJump':
-                this.gun();
+                this.noJump();
             break;
             case 'slowing' :
                 this.slowing();

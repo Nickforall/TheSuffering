@@ -22,8 +22,11 @@ export default class xpbar{
         }        
     }
     addXP(xp){
-       this.player.experience += xp;
-       this.player.experienceBar.value = this.player.experience;
-       console.log('xp is added' + xp);
+        if(this.player.experience >=99){
+            this.player.experience = 100;
+        }{
+            this.player.experience += xp;
+            this.player.experienceBar.value = this.player.experience;
+        }
     }
 }
