@@ -408,8 +408,7 @@ export default class Player extends GameObject {
                 document.getElementById('buff').style.backgroundColor = ""
             }, 15000);
         }
-        this.experience = 100;
-            console.log(this.noDamage)
+        console.log(this.noDamage)
         if(this.gotGun){
             this.holdBuff = '';
             document.getElementById('buff').style.backgroundImage = "url('../../resources/powerups/placeholder.png')"
