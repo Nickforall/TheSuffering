@@ -92,7 +92,7 @@ export default class Player extends GameObject {
         this.heartsShown = 3;
         this.lives = 3;
         //adding value to player
-        this.experience;
+        this.experience = 0;
 
         //this method is to check if player has buff
         this.holdBuff;
@@ -110,13 +110,15 @@ export default class Player extends GameObject {
         this.xpBar = new xpbar(this);
 
         this.interfaceBuff = document.getElementById('buff' + (this.world.isTop() ? 'Top' : 'Bottom'));
-        this.interfaceDebuff = document.getElementById('buff' + (this.world.isTop() ? 'Top' : 'Bottom'));
+        this.interfaceDebuff = document.getElementById('debuff' + (this.world.isTop() ? 'Top' : 'Bottom'));
 
         //making buff instance
         this.buff = new Buff(this);
 
         //making debuff instance
         this.debuff = new Debuff(this);
+
+        this.shootingCooldown = false;
 
         //Jump shizz
         // setTimeout(() => {
@@ -140,6 +142,10 @@ export default class Player extends GameObject {
     _handleDown(code) {
         this.punching = false;
         this.shooting = false;
+
+        if (this.frozen) {
+            return;
+        }
 
         switch (code) {
             case "LEFT":
@@ -193,6 +199,10 @@ export default class Player extends GameObject {
     }
 
     _jump() {
+        if (this.blockedJump) {
+            return;
+        }
+
         if(this.jumped === false){
             this.jumped = true;
             this.container.vy = -20;
@@ -269,9 +279,16 @@ export default class Player extends GameObject {
     }
 
     _shoot() {
+        if(this.shootingCooldown) return
+
         if (this.shooting === false) {
             this.shooting = true;
             this.container.vx = 0;
+
+            this.shootingCooldown = true;
+            setTimeout(() => {
+                this.shootingCooldown = false;
+            }, 1000)
 
             let attackedEntity = this.world.getCollidedEntites(this.attackhitbox);
             if (attackedEntity instanceof Enemy || attackedEntity instanceof Boss) {
@@ -283,6 +300,7 @@ export default class Player extends GameObject {
                     attackedEntity.damage(50)
                 }
             }
+
 
             if (this.playerOrientation === "right") {
                 this.sprite.playAnimation([38, 42]);
@@ -447,6 +465,41 @@ export default class Player extends GameObject {
         }
     }
 
+    debuffHandler() {
+         if (this.frozen) {
+            setTimeout(() => {
+                this.frozen = false;
+
+                this.getOpponent().interfaceDebuff.style.backgroundColor = ""
+                this.getOpponent().interfaceDebuff.style.backgroundImage = "url('../../resources/powerups/placeholder.png')"  
+            }, 5000)
+         }
+
+         if (this.slowing) {
+            setTimeout(() => {
+                this.slowing = false;
+
+                this.getOpponent().interfaceDebuff.style.backgroundColor = ""
+                this.getOpponent().interfaceDebuff.style.backgroundImage = "url('../../resources/powerups/placeholder.png')"  
+            }, 5000)
+         }
+
+         if (this.blockedJump) {
+            setTimeout(() => {
+                this.blockedJump = false;
+
+                this.getOpponent().interfaceDebuff.style.backgroundColor = ""
+                this.getOpponent().interfaceDebuff.style.backgroundImage = "url('../../resources/powerups/placeholder.png')"  
+            }, 5000)
+         }
+    }
+
+    getOpponent() {
+        let oppCtx = this.world.isTop() ? "BAPP" : "TAPP";
+        console.log(oppCtx);
+        return window[oppCtx].world.player;
+    }
+
     _damage() {
         if(!this.noDamage){
             this.lives -= 1;
@@ -500,10 +553,10 @@ export default class Player extends GameObject {
         }
 
         if (this.pressedButtons["LEFT"]) {
-            this.container.vx = -8;
+            this.container.vx = this.slowing ? -4 : -8;
         }
         if (this.pressedButtons["RIGHT"]) {
-            this.container.vx = 8;
+            this.container.vx = this.slowing ? 4 : 8;
         }
 
         // check player position (testing)
