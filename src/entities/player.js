@@ -398,15 +398,24 @@ export default class Player extends GameObject {
         checkAxis(-1, gp.axes[1], "JUMP", this);
     }
     buffHandler(){
+        console.log(this.gotGun);
         //if player has no damage set timer
         if(this.noDamage){
-            this.experience = 100;
-            console.log(this.noDamage,)
-            setTimeout(function(){
-                this.noDamage = false;
+            this.holdBuff = '';
+            console.log(this.noDamage)
+            document.getElementById('buff').style.backgroundColor = "yellow"
+            setTimeout(function(){ 
                 this.holdBuff = '';
-                console.log(this.noDamage + this.holdBuff)
+                this.noDamage = false; 
+                console.log(this.noDamage)
+                document.getElementById('buff').style.backgroundImage = "url('../../resources/powerups/placeholder.png')"
+                document.getElementById('buff').style.backgroundColor = ""
             }, 15000);
+        }
+        console.log(this.noDamage)
+        if(this.gotGun){
+            this.holdBuff = '';
+            document.getElementById('buff').style.backgroundImage = "url('../../resources/powerups/placeholder.png')"
         }
     }
 
@@ -434,7 +443,7 @@ export default class Player extends GameObject {
 
         // super.update();
         let collision = this.world.willCollide(this.container);
-
+        
         if (collision == "left" && this.pressedButtons.LEFT) {
             this.sprite.playAnimation([28, 31]);
             this.playerOrientation = "left";
@@ -518,13 +527,10 @@ export default class Player extends GameObject {
         this.currentPlayerY = this.container.y;
         // console.log(this.currentPlayerY, this.lastPlayerY);
         if(this.currentPlayerY === this.lastPlayerY ){
-            if(this.currentPlayerY > -30){
-                console.log(this.currentPlayerY);
+            if(this.currentPlayerY > -30 && this.container.vy){
                 this.jumped = false;
             }
         };
-
-        console.log(this.jumped);
 
         this.world.context.stage.position.x = this.world.context.view.width / 2;
         this.world.context.stage.position.y = this.world.context.view.height / 2;
