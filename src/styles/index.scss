@@ -183,6 +183,24 @@ body {
 		}
 	}
 
+	#buffs {
+		height: 100px;
+		position: absolute;
+		right: 10%;
+		text-align: right;
+
+		.item {
+			width: 100px;
+			height: 100px;
+			// background-color: green;
+			display: inline-block;
+			margin: 0 0 0 30px;
+			// background-image: url('../../resources/powerups/placeholder.png');
+			background-size: cover;
+			background-position: center;
+		}
+	}
+	
 	> div:nth-child(2) {
 		position: absolute;
 		left: 5%;
