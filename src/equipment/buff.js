@@ -38,8 +38,8 @@ export default class Buffs {
         console.log('gun')
         if(!this.player.holdBuff){
             this.player.holdBuff = 'gun';
+            this.player.gotGun = true;
         }
-
     }
     oneHit(){
         console.log('one hit')
@@ -53,7 +53,9 @@ export default class Buffs {
             this.player.holdBuff = 'noDamage';
         }
     }
+    //checking if player has buff
     gotBuff(){
+        //if player has buff buff gets acitivated
         if(this.player.holdBuff){
             console.log('got a buff it is' + this.player.holdBuff)
             switch(this.player.holdBuff){

@@ -52,9 +52,11 @@ export default class deBuff{
         }
     }
     gotDebuff(){
+        //checking if u have a buff
         console.log(this.player.holdDebuff)
         if(this.player.holdDebuff){
             console.log('got a de buff it is' + this.player.holdDebuff)
+            //checking which debuff to activet
             switch(this.player.holdDebuff){
                 case 'noJump':
                     this.noJump();
