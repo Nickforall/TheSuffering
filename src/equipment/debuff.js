@@ -8,8 +8,8 @@ export default class deBuff{
     //checking value if your xp bar = 100
     checkValue(){
         if(this.player.experience >= 100){
-            this.randomDeBuff();
             this.player.xpBar.addXP(-100);
+            this.randomDeBuff();
         }else{
             console.log('lol niet genoeg velue')
         }
@@ -34,13 +34,41 @@ export default class deBuff{
         }
     }
     noJump(){
-        console.log('no jump')
+        console.log('no jump');
+        if(!this.player.holdDebuff){
+            this.player.holdDebuff = 'noJump';
+        }
     }
     slowing(){
-        console.log('slowing')
+        console.log('slowing');
+        if(!this.player.holdDebuff){
+            this.player.holdDebuff = 'slowing';
+        }
     }
     freeze(){
-        console.log('freeze')
+        console.log('freeze');
+        if(!this.player.holdDebuff){
+            this.player.holdDebuff = 'freeze';
+        }
+    }
+    gotDebuff(){
+        console.log(this.player.holdDebuff)
+        if(this.player.holdDebuff){
+            console.log('got a de buff it is' + this.player.holdDebuff)
+            switch(this.player.holdDebuff){
+                case 'noJump':
+                    this.noJump();
+                break;
+                case 'slowing' :
+                    this.slowing();
+                break;
+                case 'freeze' :
+                    this.freeze();
+                break;
+            }
+        }else{
+            this.checkValue();
+        }
     }
 }
 
