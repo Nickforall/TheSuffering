@@ -148,6 +148,7 @@ export default class Player extends GameObject {
                 }
 
                 this.pressedButtons.LEFT = true;
+                this.pressedButtons.RIGHT = false;
                 this.playerOrientation = "left";
 
                 this.attackhitbox.pivot.set(44, -86);
@@ -158,6 +159,7 @@ export default class Player extends GameObject {
                 }
 
                 this.pressedButtons.RIGHT = true;
+                this.pressedButtons.LEFT = false;
                 this.playerOrientation = "right";
 
                 this.attackhitbox.pivot.set(-36 , -86);
@@ -213,7 +215,7 @@ export default class Player extends GameObject {
     _attack() {
         if (this.punching === false) {
             this.punching = true;
-            this.container.vx = 0;
+            // this.container.vx = 0;
 
             let attackedEntity = this.world.getCollidedEntites(this.attackhitbox);
             if (attackedEntity instanceof Enemy || attackedEntity instanceof Boss) {
@@ -229,6 +231,7 @@ export default class Player extends GameObject {
             if (this.playerOrientation === "right") {
                 this.sprite.playAnimation([4, 7]);
                 setTimeout(() => {
+                    console.log(this.container.vx);
                     // player.playAnimation([0, 3]);
                     if (this.container.vx > 0) {
                         this.sprite.playAnimation([8, 15]);
@@ -333,16 +336,35 @@ export default class Player extends GameObject {
         switch (code) {
             case "LEFT":
                 this.pressedButtons.LEFT = false;
-                if (!this.pressedButtons.RIGHT && this.punching === false) {
+                if (!this.pressedButtons.RIGHT && this.punching === false && this.container.vx === 0) {
                     this.sprite.playAnimation([28, 31]);
                     this.playerOrientation = "left";
+                    this.container.vx = 0;
+                } else if (this.pressedButtons.RIGHT && this.punching === false && this.container.vx === 0){
+                    this.sprite.playAnimation([0, 3]);
+                    this.playerOrientation = "right";
+                    this.container.vx = 0;
+                }
+
+                this.container.vx = 0;
+                if(!this.pressedButtons.RIGHT){
+                this.sprite.playAnimation([28, 31]);
                 }
                 break;
             case "RIGHT":
                 this.pressedButtons.RIGHT = false;
-                if (!this.pressedButtons.LEFT && this.punching === false) {
+                if (!this.pressedButtons.LEFT && this.punching === false && this.container.vx === 0) {
                     this.sprite.playAnimation([0, 3]);
                     this.playerOrientation = "right";
+                    this.container.vx = 0;
+                } else if (this.pressedButtons.LEFT && this.punching === false && this.container.vx === 0){
+                    this.sprite.playAnimation([28, 31]);
+                    this.playerOrientation = "left";
+                    this.container.vx = 0;
+                }
+                this.container.vx = 0;
+                if(!this.pressedButtons.LEFT){
+                this.sprite.playAnimation([0, 3]);
                 }
                 break;
             case "JUMP":
@@ -570,11 +592,13 @@ export default class Player extends GameObject {
         }
         this.world.context.stage.position.y = this.world.context.view.height / 6;
 
-        this.container.vx = 0;
+        // this.container.vx = 0;
 
         this._pollGamepad();
 
         this.lastPlayerY = this.container.y;
+
+        console.log(this.pressedButtons.LEFT, this.pressedButtons.RIGHT);
 
     }
 }
