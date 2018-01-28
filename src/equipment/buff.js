@@ -45,11 +45,13 @@ export default class Buffs {
         }
     }
     oneHit(){
+        document.getElementById('buff').style.backgroundImage = "url('../../resources/powerups/one-hit.png')"
         console.log('one hit')
-        if(!this.player.holdBuff){
+        if(this.player.holdBuff){
+            this.player.oneHit = true;
+            this.player.buffHandler();            
+        }else{
             this.player.holdBuff = 'oneHit';
-            document.getElementById('buff').style.backgroundImage = "url('../../resources/powerups/placeholder.png')"
-
         }
     }
     noDamage(){

@@ -102,6 +102,9 @@ export default class Player extends GameObject {
         //for buff no damage
         this.noDamage = false;
 
+        //for one hit
+        this.oneHit = false;
+
         //making instances of xpdrawer
         this.xpBar = new xpbar(this);
 
@@ -405,13 +408,15 @@ export default class Player extends GameObject {
                 this.noDamage = false; 
                 console.log(this.noDamage)
                 document.getElementById('buff').style.backgroundImage = "url('../../resources/powerups/placeholder.png')"
-                document.getElementById('buff').style.backgroundColor = ""
             }, 15000);
         }
         console.log(this.noDamage)
         if(this.gotGun){
             this.holdBuff = '';
             document.getElementById('buff').style.backgroundImage = "url('../../resources/powerups/placeholder.png')"
+        }
+        if(this.oneHit){
+            
         }
     }
 
