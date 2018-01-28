@@ -86,6 +86,7 @@ export default class Player extends GameObject {
         this.app = world.context;
 
         this.isBeingDamaged = false;
+        this.heartsShown = 3;
         this.lives = 3;
         //adding value to player
         this.experience;
@@ -439,19 +440,33 @@ export default class Player extends GameObject {
             this.container.position.x = (currentvx - 200);
         }
 
-        // if(this.jumped === true){
-        //     if(this.container.vy >= 0){
-        //         if(this.playerOrientation === "right"){
-        //             this.sprite.show(33);
-        //         } else if (this.playerOrientation === "left") {
-        //             this.sprite.show(36);
-        //         }
-        //     }
-        //     this.jumped = false
+        if (this.heartsShown != this.lives) {
+            let id = ""
 
-        //     console.log(this.jumped);
+            if (this.world.isTop()) {
+                id = "heartsTop"
+            }
+            else if (this.world.isBottom()) {
+                id = "heartsBottom"
+            }
 
-        // }
+            let hearts = document.getElementById(id).children
+
+            for (var i = hearts.length - 1; i >= 0; i--) {
+                if (i + 1 > this.lives) {
+                    hearts[hearts.length - i - 1].className = "gone"
+                }
+                else {
+                    hearts[hearts.length - i - 1].className = ""
+                }
+
+                console.log(hearts[i])
+            }
+
+            console.log(this.world.isTop())
+
+            this.heartsShown = this.lives
+        }
 
 
         this.container.y += this.container.vy;
