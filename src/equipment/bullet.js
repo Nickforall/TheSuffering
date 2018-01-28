@@ -1,4 +1,5 @@
 import GameObject from "../gameobject";
+import Enemy from "../entities/enemy";
 
 export default class Bullet extends GameObject {
     constructor(player) {
@@ -22,6 +23,12 @@ export default class Bullet extends GameObject {
 
     update() {
         super.update();
+
+        let attackedEntity = this.world.getCollidedEntites(this.sprite);
+        if (attackedEntity instanceof Enemy) {
+            console.log(attackedEntity)
+            attackedEntity.damage(100)
+        }
 
         this.sprite.x += 10;
     }
