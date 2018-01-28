@@ -381,15 +381,24 @@ export default class Player extends GameObject {
         checkAxis(-1, gp.axes[1], "JUMP", this);
     }
     buffHandler(){
+        console.log(this.gotGun);
         //if player has no damage set timer
         if(this.noDamage){
-            this.experience = 100;
-            console.log(this.noDamage,)
+            this.holdBuff = '';
+            console.log(this.noDamage)
+            document.getElementById('buff').style.backgroundColor = "yellow"
             setTimeout(function(){ 
+                clearInterval(this.blink);
                 this.noDamage = false; 
-                this.holdBuff = '';
-                console.log(this.noDamage + this.holdBuff)
+                console.log(this.noDamage)
+                document.getElementById('buff').style.backgroundImage = "url('../../resources/powerups/placeholder.png')"
+                document.getElementById('buff').style.backgroundColor = ""
+
             }, 15000);
+        }
+        if(this.gotGun){
+            this.holdBuff = '';
+            document.getElementById('buff').style.backgroundImage = "url('../../resources/powerups/placeholder.png')"
         }
     }
 

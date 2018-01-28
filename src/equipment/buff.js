@@ -35,25 +35,33 @@ export default class Buffs {
         
     }
     gun(){
+        document.getElementById('buff').style.backgroundImage = "url('../../resources/powerups/gun.png')"
         console.log('gun')
-        if(!this.player.holdBuff){
+        if(this.player.holdBuff){
             this.player.gotGun = true;
+            this.player.buffHandler();
+        }else{
+            this.player.holdBuff = 'gun';
         }
     }
     oneHit(){
         console.log('one hit')
         if(!this.player.holdBuff){
             this.player.holdBuff = 'oneHit';
+            document.getElementById('buff').style.backgroundImage = "url('../../resources/powerups/placeholder.png')"
+
         }
     }
     noDamage(){
+        document.getElementById('buff').style.backgroundImage = "url('../../resources/powerups/no-damage.png')"
         console.log('no damage')
-        if(!this.player.holdBuff){
-            this.player.holdBuff = 'noDamage';
+        if(this.player.holdBuff){
             this.player.noDamage = true;
             this.player.buffHandler();
+        }else{
+            this.player.holdBuff = 'noDamage';
         }
-    }
+    }   
     //checking if player has buffa
     gotBuff(){
         //if player has buff buff gets acitivated
