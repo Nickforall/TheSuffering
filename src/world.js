@@ -22,12 +22,8 @@ export default class World {
 		this.player = new Player(this,0,0)
 
 		this.addEntity(this.player)
+		
 		// Add Enemy enitities
-		// this.addEntity(new Enemy(this, 300, 500))
-		let x = (Math.floor(Math.random() * 1500) + 100);
-		console.log("slime position: " + x);
-		let speed = (Math.floor(Math.random() * 5) + 1);
-		// this.addEntity(new Enemy(this, x, -200, speed, 100))
 		for (var i = 0; i < 10; i++) {
 			let speed = (Math.floor(Math.random() * 5) + 1);
 			let x = (Math.floor(Math.random() * 24000) + 1500);
