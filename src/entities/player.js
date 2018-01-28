@@ -461,9 +461,9 @@ export default class Player extends GameObject {
             this.sprite.alpha = 0.8;
 
             this.interfaceBuff.style.backgroundColor = "yellow"
-            setTimeout(() => { 
+            setTimeout(() => {
                 this.holdBuff = '';
-                this.noDamage = false; 
+                this.noDamage = false;
                 this.sprite.alpha = 1.0;
                 this.interfaceBuff.style.backgroundImage = "url('../../resources/powerups/placeholder.png')"
                 this.interfaceBuff.style.backgroundColor = ""
@@ -482,7 +482,7 @@ export default class Player extends GameObject {
                 this.holdBuff = '';
                 this.oneHit = false;
                 this.interfaceBuff.style.backgroundColor = ""
-                this.interfaceBuff.style.backgroundImage = "url('../../resources/powerups/placeholder.png')"                
+                this.interfaceBuff.style.backgroundImage = "url('../../resources/powerups/placeholder.png')"
             }, 15000);
         }
     }
@@ -493,7 +493,7 @@ export default class Player extends GameObject {
                 this.frozen = false;
 
                 this.getOpponent().interfaceDebuff.style.backgroundColor = ""
-                this.getOpponent().interfaceDebuff.style.backgroundImage = "url('../../resources/powerups/placeholder.png')"  
+                this.getOpponent().interfaceDebuff.style.backgroundImage = "url('../../resources/powerups/placeholder.png')"
             }, 5000)
          }
 
@@ -502,7 +502,7 @@ export default class Player extends GameObject {
                 this.slowing = false;
 
                 this.getOpponent().interfaceDebuff.style.backgroundColor = ""
-                this.getOpponent().interfaceDebuff.style.backgroundImage = "url('../../resources/powerups/placeholder.png')"  
+                this.getOpponent().interfaceDebuff.style.backgroundImage = "url('../../resources/powerups/placeholder.png')"
             }, 5000)
          }
 
@@ -511,7 +511,7 @@ export default class Player extends GameObject {
                 this.blockedJump = false;
 
                 this.getOpponent().interfaceDebuff.style.backgroundColor = ""
-                this.getOpponent().interfaceDebuff.style.backgroundImage = "url('../../resources/powerups/placeholder.png')"  
+                this.getOpponent().interfaceDebuff.style.backgroundImage = "url('../../resources/powerups/placeholder.png')"
             }, 5000)
          }
     }
@@ -546,7 +546,7 @@ export default class Player extends GameObject {
 
         // super.update();
         let collision = this.world.willCollide(this.container);
-        
+
         if (collision == "left" && this.pressedButtons.LEFT) {
             this.sprite.playAnimation([28, 31]);
             this.playerOrientation = "left";
@@ -591,6 +591,8 @@ export default class Player extends GameObject {
 
             this.container.position.y = 0;
             this.container.position.x = (currentvx - 200);
+
+            this._damage()
         }
 
         if (this.heartsShown != this.lives) {

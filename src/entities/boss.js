@@ -66,7 +66,7 @@ export default class Boss extends GameObject {
     }
 
     update() {
-        super.update();        
+        super.update();
 
         this.counter++;
 
@@ -78,7 +78,7 @@ export default class Boss extends GameObject {
         if (this.direction) {
             this.container.position.x -= 5;
         } else {
-            this.container.position.x += 5;            
+            this.container.position.x += 5;
         }
 
 
@@ -95,6 +95,7 @@ export default class Boss extends GameObject {
             this.alive = false;
             this.container.visible = false;
             // winner winner chicken dinner
+            setWinner(this.world.isTop() ? "TAPP" : "BAPP", "Not quick enough")
         }
     }
 
