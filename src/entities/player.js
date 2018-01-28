@@ -344,7 +344,11 @@ export default class Player extends GameObject {
         this.world.context.stage.position.x = this.world.context.view.width / 2;
         this.world.context.stage.position.y = this.world.context.view.height / 2;
 
-        this.world.context.stage.pivot.x = this.sprite.x;
+        if (this.sprite.x < this.world.context.view.width / 2) {
+            this.world.context.stage.pivot.x = this.world.context.view.width / 2;
+        } else {
+            this.world.context.stage.pivot.x = this.sprite.x;
+        }
         this.world.context.stage.position.y = this.world.context.view.height / 6;
 
         this.sprite.vx = 0;
