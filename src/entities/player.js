@@ -193,6 +193,10 @@ export default class Player extends GameObject {
             this.jumped = true;
             this.container.vy = -20;
             if (this.pressedButtons.JUMP) {
+                // Jump sound
+                document.getElementById("audioJump").currentTime = 0
+    			document.getElementById("audioJump").play()
+
                 if (this.playerOrientation === "right") {
                     this.sprite.show(32);
                 } else if (this.playerOrientation === "left") {
@@ -423,6 +427,11 @@ export default class Player extends GameObject {
     _damage() {
         if(!this.noDamage){
             this.lives -= 1;
+
+            if (!window.won) {
+                document.getElementById("audioAuch").currentTime = 0
+                document.getElementById("audioAuch").play()
+            }
 
             if (this.lives <= 0) {
                 // game over
