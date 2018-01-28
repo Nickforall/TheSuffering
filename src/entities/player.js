@@ -97,6 +97,9 @@ export default class Player extends GameObject {
         //this method is to check if player has debuff
         this.holdDebuff;
 
+        //for buff no damage
+        this.noDamage = false;
+
         //making instances of xpdrawer
         this.xpBar = new xpbar(this);
 
@@ -150,14 +153,15 @@ export default class Player extends GameObject {
                 break;
             case "ATTACK":
                 this.pressedButtons.ATTACK = true;
-                //melee
-                // this._attack();
-                // this.sprite.playAnimation([4, 7]);
-
-                // Shoot
-                this.gun.spawnBullet();
-                this._shoot();
-
+                if(this.gotGun){
+                    // Shoot
+                    this.gun.spawnBullet();
+                    this._shoot();
+                }else{
+                    // melee
+                    this._attack();
+                    this.sprite.playAnimation([4, 7]);
+                }
                 break;
             case "BUFF":
                 this.buff.gotBuff();
@@ -376,15 +380,28 @@ export default class Player extends GameObject {
         checkAxis(1, gp.axes[0], "RIGHT", this);
         checkAxis(-1, gp.axes[1], "JUMP", this);
     }
+    buffHandler(){
+        //if player has no damage set timer
+        if(this.noDamage){
+            this.experience = 100;
+            console.log(this.noDamage,)
+            setTimeout(function(){ 
+                this.noDamage = false; 
+                this.holdBuff = '';
+                console.log(this.noDamage + this.holdBuff)
+            }, 15000);
+        }
+    }
 
     _damage() {
-        this.lives -= 1;
+        if(!this.noDamage){
+            this.lives -= 1;
 
-        if (this.lives <= 0) {
-            // game over
-
-            this.sprite.scale.x = 0;
-            this.sprite.scale.y = 0;
+            if (this.lives <= 0) {
+                // game over
+                this.sprite.scale.x = 0;
+                this.sprite.scale.y = 0;
+            }
         }
     }
 
