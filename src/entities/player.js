@@ -50,7 +50,7 @@ export default class Player extends GameObject {
 
         this.sprite = window.spriteUtils.sprite(playerTextures);
         this.sprite.show(12);
-        this.sprite.fps = 8;
+        this.sprite.fps = 12;
 
         this.sprite.scale.set(3, 3);
         this.sprite.playAnimation([0, 3]);
@@ -60,9 +60,9 @@ export default class Player extends GameObject {
 
         //uncomment fills to see colliders (in case of dev emergency)
         this.hitbox = new PIXI.Graphics();
-        // this.hitbox.beginFill(0xff0000);
+        this.hitbox.beginFill(0xff0000);
         this.hitbox.drawRect(0, 0, 86, 128);
-        // this.hitbox.endFill();
+        this.hitbox.endFill();
         this.hitbox.x = this.sprite.x;
         this.hitbox.y = this.sprite.y;
         this.hitbox.pivot.set(-36 , -86);
@@ -419,10 +419,10 @@ export default class Player extends GameObject {
         }
 
         if (this.pressedButtons["LEFT"]) {
-            this.container.vx = -5;
+            this.container.vx = -8;
         }
         if (this.pressedButtons["RIGHT"]) {
-            this.container.vx = 5;
+            this.container.vx = 8;
         }
 
         // check player position (testing)

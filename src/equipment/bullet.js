@@ -14,8 +14,9 @@ export default class Bullet extends GameObject {
         this.sprite.scale.x = 3;
         this.sprite.scale.y = 3;
         
-        this.sprite.y = this.player.hitbox.y + (this.player.hitbox.height - 20);
-        this.sprite.x = this.player.hitbox.x = (this.player.hitbox.width * 2);
+        this.sprite.y = this.player.container.y + (this.player.sprite.height/2) - 30;
+        this.sprite.x = this.player.container.x + (this.player.sprite.width - 40);
+        console.log(this.sprite.x);
         
     }
 
