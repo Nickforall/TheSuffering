@@ -60,9 +60,9 @@ export default class Player extends GameObject {
 
         //uncomment fills to see colliders (in case of dev emergency)
         this.hitbox = new PIXI.Graphics();
-        this.hitbox.beginFill(0xff0000);
+        // this.hitbox.beginFill(?0xff0000);
         this.hitbox.drawRect(0, 0, 86, 128);
-        this.hitbox.endFill();
+        // this.hitbox.endFill();
         this.hitbox.x = this.sprite.x;
         this.hitbox.y = this.sprite.y;
         this.hitbox.pivot.set(-36 , -86);
