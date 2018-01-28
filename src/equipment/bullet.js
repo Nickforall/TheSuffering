@@ -18,16 +18,22 @@ export default class Bullet extends GameObject {
         this.sprite.y = this.player.container.y + (this.player.sprite.height/2) - 30;
         this.sprite.x = this.player.container.x + (this.player.sprite.width - 40);
         console.log(this.sprite.x);
+
+        this.isUsed = false;
         
     }
 
     update() {
+        if (this.isUsed) return;
+
         super.update();
 
         let attackedEntity = this.world.getCollidedEntites(this.sprite);
         if (attackedEntity instanceof Enemy) {
             console.log(attackedEntity)
             attackedEntity.damage(100)
+            this.sprite.visible = false;
+            this.isUsed = true;
         }
 
         this.sprite.x += 10;
