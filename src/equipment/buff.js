@@ -37,7 +37,6 @@ export default class Buffs {
     gun(){
         console.log('gun')
         if(!this.player.holdBuff){
-            this.player.holdBuff = 'gun';
             this.player.gotGun = true;
         }
     }
@@ -51,9 +50,11 @@ export default class Buffs {
         console.log('no damage')
         if(!this.player.holdBuff){
             this.player.holdBuff = 'noDamage';
+            this.player.noDamage = true;
+            this.player.buffHandler();
         }
     }
-    //checking if player has buff
+    //checking if player has buffa
     gotBuff(){
         //if player has buff buff gets acitivated
         if(this.player.holdBuff){
