@@ -132,6 +132,17 @@ audio {
 			font-weight: bold;
 		}
 	}
+
+	> span {
+		position: absolute;
+		top: 30px;
+		left: 30px;
+		font-size: 22px;
+		max-width: 15%;
+		line-height: .8;
+		text-align: justify;
+		color: white;
+	}
 }
 
 #loader {
