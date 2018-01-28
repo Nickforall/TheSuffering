@@ -435,7 +435,7 @@ export default class Player extends GameObject {
 
         // super.update();
         let collision = this.world.willCollide(this.container);
-
+        
         if (collision == "left" && this.pressedButtons.LEFT) {
             this.sprite.playAnimation([28, 31]);
             this.playerOrientation = "left";
@@ -519,13 +519,10 @@ export default class Player extends GameObject {
         this.currentPlayerY = this.container.y;
         // console.log(this.currentPlayerY, this.lastPlayerY);
         if(this.currentPlayerY === this.lastPlayerY ){
-            if(this.currentPlayerY > -30){
-                console.log(this.currentPlayerY);
+            if(this.currentPlayerY > -30 && this.container.vy){
                 this.jumped = false;
             }
         };
-
-        console.log(this.jumped);
 
         this.world.context.stage.position.x = this.world.context.view.width / 2;
         this.world.context.stage.position.y = this.world.context.view.height / 2;
