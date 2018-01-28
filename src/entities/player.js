@@ -149,14 +149,15 @@ export default class Player extends GameObject {
                 break;
             case "ATTACK":
                 this.pressedButtons.ATTACK = true;
-                //melee
-                // this._attack();
-                // this.sprite.playAnimation([4, 7]);
-
-                // Shoot
-                this.gun.spawnBullet();
-                this._shoot();
-
+                if(this.gotGun){
+                    // Shoot
+                    this.gun.spawnBullet();
+                    this._shoot();
+                }else{
+                    // melee
+                    this._attack();
+                    this.sprite.playAnimation([4, 7]);
+                }
                 break;
             case "BUFF":
                 this.buff.gotBuff();
