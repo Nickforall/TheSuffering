@@ -79,7 +79,7 @@ export default class Player extends GameObject {
 
         this.world.context.stage.addChild(this.attackhitbox);
 
-        this.world.context.stage.addChild(this.hitbox);        
+        this.world.context.stage.addChild(this.hitbox);
         this.world.context.stage.addChild(this.container);
 
         this.pressedButtons = {};
@@ -139,7 +139,7 @@ export default class Player extends GameObject {
                 this.playerOrientation = "right";
 
                 this.attackhitbox.pivot.set(-36 , -86);
-                
+
                 break;
             case "JUMP":
                 if (this.pressedButtons.JUMP !== true) {
@@ -388,6 +388,8 @@ export default class Player extends GameObject {
     }
 
     update() {
+        if (!this.app.ready) return
+
         // super.update();
         let collision = this.world.willCollide(this.container);
 
@@ -408,7 +410,7 @@ export default class Player extends GameObject {
                 }, 2000);
 
                 if (entityCollision.alive && !this.isBeingDamaged) {
-                    this.isBeingDamaged = true;                    
+                    this.isBeingDamaged = true;
                     this._damage();
                 }
             }
@@ -461,7 +463,6 @@ export default class Player extends GameObject {
         this.attackhitbox.y = this.container.y - 64;
         this.attackhitbox.x = this.container.x;
 
-        
 
         this.world.context.stage.position.x = this.world.context.view.width / 2;
         this.world.context.stage.position.y = this.world.context.view.height / 2;
@@ -475,6 +476,6 @@ export default class Player extends GameObject {
 
         this.container.vx = 0;
 
-        this._pollGamepad();        
+        this._pollGamepad();
     }
 }

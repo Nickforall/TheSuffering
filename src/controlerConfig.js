@@ -110,6 +110,9 @@ export default function startControlerConfig() {
 			setTimeout(() => {
 				document.getElementById("overlay").style.opacity = 0;
 
+				TAPP.ready = true
+				BAPP.ready = true
+
 				setTimeout(() => {
 					// Close the overlay
 					document.getElementById("overlay").style.display = "none";

@@ -26,6 +26,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 		window[context].world = new World(window[context]);
 		window[context].inputProfile = false;
+		window[context].ready = false;
 
 		// Add it to the DOM
 		document.body.appendChild(window[context].view);
