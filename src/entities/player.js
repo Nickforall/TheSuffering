@@ -509,7 +509,7 @@ export default class Player extends GameObject {
         this.currentPlayerY = this.container.y;
         // console.log(this.currentPlayerY, this.lastPlayerY);
         if(this.currentPlayerY === this.lastPlayerY ){
-            if(this.currentPlayerY > -30){
+            if(this.currentPlayerY > -30 && this.container.vy){
                 console.log(this.currentPlayerY);
                 this.jumped = false;
             }
