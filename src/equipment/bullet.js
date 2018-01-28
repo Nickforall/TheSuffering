@@ -21,6 +21,12 @@ export default class Bullet extends GameObject {
 
         this.isUsed = false;
         
+        this.travelDistance = 0;
+    }
+
+    _kill() {
+        this.sprite.visible = false;
+        this.isUsed = true;
     }
 
     update() {
@@ -28,14 +34,18 @@ export default class Bullet extends GameObject {
 
         super.update();
 
+        if (this.travelDistance > 500) {
+            this._kill();
+        }
+
         let attackedEntity = this.world.getCollidedEntites(this.sprite);
         if (attackedEntity instanceof Enemy) {
             console.log(attackedEntity)
-            attackedEntity.damage(100)
-            this.sprite.visible = false;
-            this.isUsed = true;
+            attackedEntity.damage(100);
+            this._kill();
         }
 
         this.sprite.x += 10;
+        this.travelDistance += 10;  
     }
 }
