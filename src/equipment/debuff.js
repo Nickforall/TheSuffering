@@ -34,20 +34,52 @@ export default class deBuff{
         }
     }
     noJump(){
+        this.player.interfaceDebuff.style.backgroundImage = "url('../../resources/powerups/no-jump.png')"
+
         console.log('no jump');
-        if(!this.player.holdDebuff){
+        if(this.player.holdDebuff){
+            this.player.interfaceDebuff.style.backgroundColor = "yellow"
+            
+            this.player.holdDebuff = '';
+            let opp = this.player.getOpponent();
+            opp.blockedJump = true;
+
+            opp.debuffHandler();            
+        } else {
+            
             this.player.holdDebuff = 'noJump';
+
         }
     }
     slowing(){
+        this.player.interfaceDebuff.style.backgroundImage = "url('../../resources/powerups/slow-down.png')"        
+
         console.log('slowing');
-        if(!this.player.holdDebuff){
+        if(this.player.holdDebuff){
+            this.player.interfaceDebuff.style.backgroundColor = "yellow"
+            
+            this.player.holdDebuff = '';
+            let opp = this.player.getOpponent();
+            opp.slowing = true;
+
+            opp.debuffHandler();
+        } else {
             this.player.holdDebuff = 'slowing';
+
         }
     }
     freeze(){
+        this.player.interfaceDebuff.style.backgroundImage = "url('../../resources/powerups/freeze.png')"                        
         console.log('freeze');
-        if(!this.player.holdDebuff){
+        if(this.player.holdDebuff){
+            this.player.interfaceDebuff.style.backgroundColor = "yellow"
+            
+            this.player.holdDebuff = '';            
+            let opp = this.player.getOpponent();
+            opp.frozen = true;
+
+            opp.debuffHandler();            
+        } else {
             this.player.holdDebuff = 'freeze';
         }
     }

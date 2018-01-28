@@ -228,6 +228,9 @@ audio {
 		position: absolute;
 		right: 10%;
 		text-align: right;
+		top: 0px;
+		opacity: 1;
+		transition: opacity .2s, top .2s;
 
 		.item {
 			width: 100px;
@@ -280,6 +283,7 @@ audio {
 
 	&.lose {
 		color: #D1B196;
+		text-shadow: 5px 3px rgba(231, 239, 110, 0.19);
 	}
 
 	&.win {
